@@ -1,7 +1,6 @@
 import { CreateTopicDto } from '../dto/create.topic.dto';
 import { PatchTopicDto } from '../dto/patch.topic.dto';
 import { PutTopicDto } from '../dto/put.topic.dto';
-import  UsersDao from '../../users/daos/users.dao'
 import shortid from 'shortid';
 import debug from 'debug';
 import mongooseService from '../../common/services/mongoose.service';
