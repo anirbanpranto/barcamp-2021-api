@@ -11,6 +11,12 @@ import {TopicsRoutes} from './topics/topics.routes.config'
 import debug from 'debug';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
+
+/* Swagger Documentation */
+const swaggerUI = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load('./swagger.yaml');
+
 const dotenvResult = dotenv.config();
 if (dotenvResult.error) {
     throw dotenvResult.error;
@@ -49,6 +55,9 @@ if (!process.env.DEBUG) {
 
 // initialize the logger with the above configuration
 app.use(expressWinston.logger(loggerOptions));
+
+/* initialize swagger documentation */
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 // here we are adding the UserRoutes to our array,
 // after sending the Express.js application object to have the routes added to our app!
