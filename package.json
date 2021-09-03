@@ -23,7 +23,10 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.3",
     "shortid": "^2.2.16",
-    "winston": "^3.3.3"
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui-express": "^4.1.6",
+    "winston": "^3.3.3",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "@types/chai": "^4.2.21",
