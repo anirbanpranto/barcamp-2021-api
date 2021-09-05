@@ -68,7 +68,6 @@ class UsersMiddleware {
         req.body.id = req.params.userId;
         next();
     }
-    
 }
 
 export default new UsersMiddleware();
