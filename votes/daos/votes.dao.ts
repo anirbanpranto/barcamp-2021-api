@@ -40,7 +40,7 @@ class VotesDao {
   }
 
   async checkUser(userId: string){
-    return this.Vote.findOne({userId}).exec();
+    return this.Vote.find({userId}).exec();
 }
 
   async getVotes(limit = 25, page = 0) {

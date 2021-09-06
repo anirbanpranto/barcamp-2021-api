@@ -15,7 +15,7 @@ class VotesService implements CRUD {
         return VotesDao.getVotes(limit, page);
     }
 
-    async readById(id: string) {
+    async readByUserId(id: string) {
         return VotesDao.checkUser(id);
     }
 }
