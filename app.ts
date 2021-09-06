@@ -8,6 +8,7 @@ import {CommonRoutesConfig} from './common/common.routes.config';
 import {UsersRoutes} from './users/users.routes.config';
 import { AuthRoutes } from './auth/auth.routes.config';
 import {TopicsRoutes} from './topics/topics.routes.config'
+import {VotesRoutes} from './votes/votes.routes.config';
 import debug from 'debug';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
@@ -64,6 +65,7 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 routes.push(new AuthRoutes(app));
 routes.push(new TopicsRoutes(app));
 routes.push(new UsersRoutes(app));
+routes.push(new VotesRoutes(app));
 
 // this is a simple route to make sure everything is working properly
 const runningMessage = `Server running at http://localhost:${process.env.PORT || 3000}`;
