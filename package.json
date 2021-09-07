@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && node --unhandled-rejections=strict ./dist/app.js",
-    "debug": "export DEBUG=* && npm run start",
+    "start": "tsc && nodemon ./dist/app.js",
+    "debug": "export DEBUG=* && npm start",
     "test": "mocha -r ts-node/register 'test/**/*.test.ts' --unhandled-rejections=strict",
     "test-debug": "export DEBUG=* && npm test"
   },
@@ -19,6 +19,7 @@
     "express": "^4.17.1",
     "express-validator": "^6.12.1",
     "express-winston": "^4.1.0",
+    "google-auth-library": "^7.9.1",
     "helmet": "^4.6.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.3",
@@ -39,6 +40,7 @@
     "@types/supertest": "^2.0.11",
     "chai": "^4.3.4",
     "mocha": "^9.1.1",
+    "nodemon": "^2.0.12",
     "source-map-support": "^0.5.19",
     "supertest": "^6.1.6",
     "ts-node": "^10.2.1",

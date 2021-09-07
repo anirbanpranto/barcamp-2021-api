@@ -1,6 +1,8 @@
 import express from 'express';
 import userService from '../services/users.service';
 import debug from 'debug';
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client(process.env.CLIENT_ID);
 
 const log: debug.IDebugger = debug('app:users-controller');
 class UsersMiddleware {
@@ -10,7 +12,12 @@ class UsersMiddleware {
         res: express.Response,
         next: express.NextFunction
     ) {
-        const user = await userService.getUserByEmail(req.body.email);
+        const ticket = await client.verifyIdToken({
+            idToken: req.body.googleId,
+            audience: process.env.CLIENT_ID,
+        });
+        const { email } = ticket.getPayload();
+        const user = await userService.getUserByEmail(email);
         if (user) {
             res.status(400).send({ error: `User email already exists` });
         } else {
