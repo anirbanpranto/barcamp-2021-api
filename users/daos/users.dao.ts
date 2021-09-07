@@ -13,7 +13,7 @@ class UsersDao {
     userSchema = new this.Schema({
         _id: String,
         email: String,
-        password: { type: String, select: false },
+        googleId: { type: String, select: false },
         firstName: String,
         lastName: String,
         permissionFlags: Number,
@@ -44,7 +44,7 @@ class UsersDao {
         return this.User.findOne({ _id: userId }).exec();
     }
     
-    async getUsers(limit = 25, page = 0) {
+    async getUsers(limit = 1000, page = 0) {
         return this.User.find()
             .limit(limit)
             .skip(limit * page)
@@ -68,9 +68,9 @@ class UsersDao {
         return this.User.deleteOne({ _id: userId }).exec();
     }
 
-    async getUserByEmailWithPassword(email: string) {
+    async getUserByEmailWithGoogleId(email: string) {
         return this.User.findOne({ email: email })
-            .select('_id email permissionFlags +password')
+            .select('_id email permissionFlags +googleId')
             .exec();
     }
     

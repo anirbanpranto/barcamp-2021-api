@@ -28,7 +28,7 @@ class JwtMiddleware {
     }
     validRefreshNeeded(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield users_service_1.default.getUserByEmailWithPassword(res.locals.jwt.email);
+            const user = yield users_service_1.default.getUserByEmailWithGoogleId(res.locals.jwt.email);
             const salt = crypto_1.default.createSecretKey(Buffer.from(res.locals.jwt.refreshKey.data));
             const jwtSecret = process.env.JWT_SECRET;
             if (jwtSecret) {
