@@ -34,7 +34,6 @@ class UsersController {
             audience: process.env.CLIENT_ID,
         });
         const { email } = ticket.getPayload();
-        console.log(ticket.getPayload());
         req.body.email = email;
         req.body.permissionFlags = 1;
         const userId = await usersService.create(req.body);
