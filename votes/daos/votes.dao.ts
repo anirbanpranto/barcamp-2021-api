@@ -34,8 +34,7 @@ class VotesDao {
     const voteId = shortid.generate();
     const vote = new this.Vote({
       _id: shortid.generate(),
-      ...voteFields,
-      permissionFlags: 1,
+      ...voteFields
     });
     await vote.save();
 

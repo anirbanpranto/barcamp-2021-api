@@ -32,8 +32,7 @@ class TopicsDao {
         const topicId = shortid.generate();
         const topic = new this.Topic({
             _id: topicId,
-            ...topicFields,
-            permissionFlags: 1,
+            ...topicFields
         });
         await topic.save();
         return topicId;
