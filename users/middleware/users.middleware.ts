@@ -75,6 +75,27 @@ class UsersMiddleware {
         req.body.id = req.params.userId;
         next();
     }
+
+    async extractUserInfo(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) {
+        const ticket = await client.verifyIdToken({
+            idToken: req.body.googleId,
+            audience: process.env.CLIENT_ID,
+        });
+        const { email } = await ticket.getPayload();
+        console.log(ticket.getPayload());
+        const user = await userService.getUserByEmail(email);
+        console.log(user);
+        req.body.email = email;
+        // @ts-expect-error
+        req.body.userId = user._id;
+        // @ts-expect-error
+        req.body.permissionFlags = user.permissionFlags
+        next();
+    }
 }
 
 export default new UsersMiddleware();

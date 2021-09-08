@@ -33,7 +33,6 @@ export class TopicsRoutes extends CommonRoutesConfig {
                 body('company').isString().optional(),
                 body('self_description').isString(),
                 BodyValidationMiddleware.verifyBodyFieldsErrors,
-                TopicsMiddleware.validateUserExists,
                 TopicsMiddleware.validateUserDoesntHaveTopic,
                 TopicsController.createTopic
             );

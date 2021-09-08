@@ -35,7 +35,6 @@ class UsersController {
         });
         const { email } = ticket.getPayload();
         req.body.email = email;
-        req.body.permissionFlags = 1;
         const userId = await usersService.create(req.body);
         res.status(201).send({ id: userId });
     }
