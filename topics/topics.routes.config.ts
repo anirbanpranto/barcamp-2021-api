@@ -26,13 +26,14 @@ export class TopicsRoutes extends CommonRoutesConfig {
             .post(
                 body('name').isString(),
                 body('user').isString(),
-                body('theme').isString(),
+                body('theme').isString().matches(/^(non-tech|tech|nonsense)$/).withMessage('Topic theme has to be either non-tech, tech or nonsense'),
                 body('description').isString(),
                 body('contact').isString(),
                 body('institute').isString().optional(),
                 body('company').isString().optional(),
                 body('self_description').isString(),
                 BodyValidationMiddleware.verifyBodyFieldsErrors,
+                TopicsMiddleware.validateUserExists,
                 TopicsMiddleware.validateUserDoesntHaveTopic,
                 TopicsController.createTopic
             );
