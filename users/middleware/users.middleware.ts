@@ -67,7 +67,7 @@ class UsersMiddleware {
             next();
         } else {
             res.status(404).send({
-                error: `User ${req.params.userId} not found`,
+                error: `User ${req.params.userId} not found!`,
             });
         }
     }
