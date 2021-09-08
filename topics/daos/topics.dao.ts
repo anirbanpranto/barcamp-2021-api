@@ -51,7 +51,7 @@ class TopicsDao {
         return this.Topic.find()
             .limit(limit)
             .skip(limit * page)
-            .populate('user', "_id email")
+            .populate('user')
             .exec();
     }
 

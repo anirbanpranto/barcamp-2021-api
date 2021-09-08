@@ -15,7 +15,6 @@ export class AuthRoutes extends CommonRoutesConfig {
         this.app.post(`/auth`, [
             body('googleId').isString(),
             BodyValidationMiddleware.verifyBodyFieldsErrors,
-            authMiddleware.verifyUserGoogleId,
             authController.createJWT,
         ]);
 

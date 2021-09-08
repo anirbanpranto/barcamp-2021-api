@@ -24,7 +24,7 @@ class JwtMiddleware {
         res: express.Response,
         next: express.NextFunction
     ) {
-        const user: any = await usersService.getUserByEmailWithGoogleId(
+        const user: any = await usersService.getUserByEmail(
             res.locals.jwt.email
         );
         const salt = crypto.createSecretKey(
