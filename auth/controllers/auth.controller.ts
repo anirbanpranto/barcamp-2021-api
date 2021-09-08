@@ -12,7 +12,7 @@ class AuthController {
             // @ts-expect-error
             const jwtSecret: string = process.env.JWT_SECRET;
             const tokenExpirationInSeconds = 36000;
-            console.log(req.body)
+            //console.log(req.body)
             const refreshId = req.body.userId + jwtSecret;
             const salt = crypto.createSecretKey(crypto.randomBytes(16));
             const hash = crypto

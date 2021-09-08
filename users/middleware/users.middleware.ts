@@ -86,10 +86,11 @@ class UsersMiddleware {
             audience: process.env.CLIENT_ID,
         });
         const { email } = await ticket.getPayload();
-        console.log(ticket.getPayload());
+        // console.log(ticket.getPayload());
         const user = await userService.getUserByEmail(email);
-        console.log(user);
-        req.body.email = email;
+        //console.log(user);
+        // @ts-expect-error
+        req.body.email = user.email;
         // @ts-expect-error
         req.body.userId = user._id;
         // @ts-expect-error
