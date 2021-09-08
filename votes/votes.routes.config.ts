@@ -5,6 +5,7 @@ import BodyValidationMiddleware from '../common/middleware/body.validation.middl
 import { body } from 'express-validator';
 import express from 'express';
 import jwtMiddleware from '../auth/middleware/jwt.middleware';
+import votesMiddleware from './middleware/votes.middleware';
 
 export class VotesRoutes extends CommonRoutesConfig {
   constructor(app: express.Application) {
@@ -27,10 +28,14 @@ export class VotesRoutes extends CommonRoutesConfig {
         VotesController.createVote
       );
 
-    this.app.param('userId', VotesMiddleware.validateUserExists);
+    this.app.param('userId', VotesMiddleware.extractUserId);
     this.app
       .route('/votes/:userId')
-      .get(jwtMiddleware.validJWTNeeded, VotesController.getVote)
+      .get(
+        jwtMiddleware.validJWTNeeded,
+        votesMiddleware.validateUserExists,
+        VotesController.getVote
+      )
 
     return this.app;
   }
