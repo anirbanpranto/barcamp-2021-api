@@ -105,7 +105,7 @@ class UsersMiddleware {
           
         } catch (error) {
           log(error);
-          res.status(500).send({ error: `User not found` });
+          res.status(500).send({ error: `Token invalid` });
         }
 
     }
