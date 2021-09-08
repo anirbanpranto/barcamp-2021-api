@@ -10,10 +10,13 @@ class VotesDao {
 
   voteSchema = new this.Schema({
     _id: String,
-    vote: ['topic', 'speaker'],
+    vote: {
+      type: String,
+      enum: ['topic', 'speaker'],
+    },
     userId: {
       type: String, 
-      ref: "Users"
+      ref: 'Users'
     },
     topicId: {
       type: String,
@@ -39,21 +42,26 @@ class VotesDao {
     return voteId
   }
 
-  async checkUser(userId: string){
-    return this.Vote.find({userId}).exec();
-}
-
-  async getVotes(limit = 25, page = 0) {
-    return this.Vote.find()
-    .limit(limit)
-    .skip(limit * page)
-    .populate('topic')
-    .exec();
+  async getByAllFields(voteFields: CreateVoteDto) {
+    return this.Vote.findOne({...voteFields}).exec();
   }
 
-  async removeVoteById(topicId: string) {
+  async checkUser(userId: string){
+    return this.Vote.find({userId}).exec();
+  }
+
+  async getAll(limit = 25, page = 0) {
+    return this.Vote.find()
+      .limit(limit)
+      .skip(limit * page)
+      .populate('userId')
+      .populate('topicId')
+      .exec();
+  }
+
+  async removeById(topicId: string) {
     return this.Vote.deleteOne({ _id: topicId }).exec();
-}
+  }
 }
 
 export default new VotesDao();

@@ -12,6 +12,9 @@ import debug from 'debug';
 
 import { PatchUserDto } from '../dto/patch.user.dto';
 
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client(process.env.CLIENT_ID);
+
 const log: debug.IDebugger = debug('app:users-controller');
 class UsersController {
     async listUsers(req: express.Request, res: express.Response) {
@@ -25,7 +28,15 @@ class UsersController {
     }
 
     async createUser(req: express.Request, res: express.Response) {
-        req.body.password = await argon2.hash(req.body.password);
+        //get the email
+        const ticket = await client.verifyIdToken({
+            idToken: req.body.googleId,
+            audience: process.env.CLIENT_ID,
+        });
+        const { email } = ticket.getPayload();
+        console.log(ticket.getPayload())
+        req.body.email = email
+        req.body.googleId = await argon2.hash(req.body.googleId);
         const userId = await usersService.create(req.body);
         res.status(201).send({ id: userId });
     }

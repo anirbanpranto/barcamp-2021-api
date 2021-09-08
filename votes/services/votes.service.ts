@@ -8,15 +8,19 @@ class VotesService implements CRUD {
     }
 
     async deleteById(id: string) {
-        return VotesDao.removeVoteById(id);
+        return VotesDao.removeById(id);
     }
 
     async list(limit: number, page: number) {
-        return VotesDao.getVotes(limit, page);
+        return VotesDao.getAll(limit, page);
     }
 
     async readByUserId(id: string) {
         return VotesDao.checkUser(id);
+    }
+
+    async getByAllFields( resource: CreateVoteDto) {
+      return VotesDao.getByAllFields(resource);
     }
 }
 

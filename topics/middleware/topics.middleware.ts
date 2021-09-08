@@ -20,6 +20,22 @@ class TopicsMiddleware {
         }
     }
     
+    async validateUserExists(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) {
+        const user = await userService.readById(req.body.user);
+        if (user) {
+            res.locals.user = user;
+            next();
+        } else {
+            res.status(404).send({
+                error: `User ${req.body.user} not found`,
+            });
+        }
+    }
+
     async validateTopicExists(
         req: express.Request,
         res: express.Response,

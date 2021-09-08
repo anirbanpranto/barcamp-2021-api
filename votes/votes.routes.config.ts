@@ -18,9 +18,12 @@ export class VotesRoutes extends CommonRoutesConfig {
       .post(
         body('userId').isLength({min: 1}).withMessage('Must include userId'), 
         body('topicId').isLength({min: 1}).withMessage('Must include topicId'), 
+        body('vote').exists().matches(/^(speaker|topic)$/).withMessage('Vote needs to exist and value is either speaker or topic'),
         BodyValidationMiddleware.verifyBodyFieldsErrors,  
         jwtMiddleware.validJWTNeeded, 
         VotesMiddleware.validateUserExists,  
+        VotesMiddleware.validateTopicExists,
+        VotesMiddleware.validateVoteExists,
         VotesController.createVote
       );
 

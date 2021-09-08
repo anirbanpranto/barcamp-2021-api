@@ -24,8 +24,7 @@ export class UsersRoutes extends CommonRoutesConfig {
                 UsersController.listUsers
             )
             .post(
-                body('email').isEmail(),
-                body('password').isLength({min : 5}).withMessage('Must include password (5+ characters)'),
+                body('googleId').isString(),
                 BodyValidationMiddleware.verifyBodyFieldsErrors,
                 UsersMiddleware.validateSameEmailDoesntExist,
                 UsersController.createUser
@@ -44,7 +43,6 @@ export class UsersRoutes extends CommonRoutesConfig {
 
         this.app.put(`/users/:userId`, [
             body('email').isEmail(),
-            body('password').isLength({min : 5}).withMessage('Must include password (5+ characters)'),
             body('firstName').isString(),
             body('lastName').isString(),
             body('permissionFlags').isInt(),
@@ -56,7 +54,6 @@ export class UsersRoutes extends CommonRoutesConfig {
 
         this.app.patch(`/users/:userId`, [
             body('email').isEmail().optional(),
-            body('password').isLength({min : 5}).withMessage('Password must be 5+ characters').optional(),
             body('firstName').isString().optional(),
             body('permissionFlags').isInt().optional(),
             BodyValidationMiddleware.verifyBodyFieldsErrors,

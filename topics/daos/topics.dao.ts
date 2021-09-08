@@ -14,12 +14,12 @@ class TopicsDao {
         _id: String,
         name: String,
         user: { type: String, ref: 'Users' },
-        Theme: String,
-        Description: String,
-        Contact: String,
-        Institute: String,
-        Company : String,
-        Self_Description : String
+        theme: String,
+        description: String,
+        contact: String,
+        institute: String,
+        company : String,
+        self_description : String
     }, { id: false });
 
     Topic = mongooseService.getMongoose().model('Topics', this.topicSchema);
@@ -51,7 +51,7 @@ class TopicsDao {
         return this.Topic.find()
             .limit(limit)
             .skip(limit * page)
-            .populate('user')
+            .populate('user', "_id email")
             .exec();
     }
 
