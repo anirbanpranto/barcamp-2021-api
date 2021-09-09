@@ -1,0 +1,7 @@
+"use strict";
+data;
+Deadlines;
+{
+    VOTING_START: 'qwe';
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29tbW9uLmRhdGUuZGF0YS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uL2NvbW1vbi9taWRkbGV3YXJlL2NvbW1vbi5kYXRlLmRhdGEudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IjtBQUFPLElBQUksQ0FBQTtBQUFDLFNBQVMsQ0FBQTtBQUFDO0lBQ3BCLFlBQVksRUFBRSxLQUFLLENBQUM7Q0FDckIifQ==
