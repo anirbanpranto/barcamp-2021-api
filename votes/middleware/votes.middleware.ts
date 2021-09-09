@@ -29,28 +29,71 @@ class VotesMiddleware {
       res: express.Response,
       next: express.NextFunction
   ) {
-    const topic = await topicService.readById(req.body.topicId);
-    if (topic) {
-        next();
-    } else {
-        res.status(404).send({
-            error: `Topic ${req.body.topicId} not found`,
-        });
+    const topicArr = req.body.topicId
+    let errArr: Array<String> = [];
+    if(topicArr.length){
+      var checkExist = new Promise((resolve, reject) => {
+          topicArr.forEach(async (topicId: string, index: number, array: any) => {
+            const singleTopic = await topicService.readById(topicId);
+    
+            if (!singleTopic) {
+              errArr.push(`${topicId}`)
+            }
+
+            if (index === array.length -1) resolve(1);
+          });
+      });
+
+      checkExist
+        .then(() => {
+          if (errArr.length > 0) {
+            return res.status(404).send({
+              error: `Topic Validation Failed`,
+              errArr
+            }).end();
+          }else{
+            next();
+          }
+        })
+        .catch(() => {
+          return res.status(500).send({
+            error: `Topic Validation Failed`,
+          });
+        })
     }
   }
 
-  async validateVoteExists(
+  async validateAlreadyVoted(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
   ) {
-    const vote = await voteService.getByAllFields(req.body);
-    if (vote) {
-      res.status(404).send({
-        error: `Already voted`,
-      });
-      
-    } else {
+    const user = await votesService.readByUserId(req.body.userId);
+    if (user.length === 0) {
+      next();
+    }else{
+      return res.status(404).send({
+        error: `User already voted`,
+      }).end();
+    }
+  }
+
+  async validateVoteArrDuplicates(
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) {
+    const voteArr: Array<String> = req.body.topicId
+
+    const toFindDuplicates = (voteArr: any) => voteArr.filter((item: any, index: any) => voteArr.indexOf(item) !== index)
+    const duplicateElement = toFindDuplicates(voteArr);
+
+    if (duplicateElement.length > 0) {
+      return res.status(404).send({
+        error: `Duplicate vote`,
+        duplicateElement
+      }).end();
+    }else{
       next();
     }
   }
@@ -59,10 +102,10 @@ class VotesMiddleware {
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
-) {
+  ) {
     req.body.id = req.params.userId;
     next();
-}
+  }
 }
 
 export default new VotesMiddleware();

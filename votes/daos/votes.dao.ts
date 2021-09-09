@@ -22,7 +22,7 @@ class VotesDao {
       type: String,
       ref: 'Topics'
     },
-  }, { id: false })
+  }, { id: false})
 
   Vote = mongooseService.getMongoose().model('Votes', this.voteSchema);
 
@@ -42,6 +42,7 @@ class VotesDao {
   }
 
   async getByAllFields(voteFields: CreateVoteDto) {
+    log(voteFields);
     return this.Vote.findOne({...voteFields}).exec();
   }
 
