@@ -32,10 +32,6 @@ class UsersService implements CRUD {
     async getUserByEmail(email: string) {
         return UsersDao.getUserByEmail(email);
     }
-
-    async getUserByEmailWithGoogleId(email: string) {
-        return UsersDao.getUserByEmailWithGoogleId(email);
-    }
 }
 
 export default new UsersService(); //

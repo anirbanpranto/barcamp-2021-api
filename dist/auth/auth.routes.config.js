@@ -6,10 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthRoutes = void 0;
 const common_routes_config_1 = require("../common/common.routes.config");
 const auth_controller_1 = __importDefault(require("./controllers/auth.controller"));
-const auth_middleware_1 = __importDefault(require("./middleware/auth.middleware"));
 const body_validation_middleware_1 = __importDefault(require("../common/middleware/body.validation.middleware"));
 const express_validator_1 = require("express-validator");
 const jwt_middleware_1 = __importDefault(require("./middleware/jwt.middleware"));
+const users_middleware_1 = __importDefault(require("../users/middleware/users.middleware"));
 class AuthRoutes extends common_routes_config_1.CommonRoutesConfig {
     constructor(app) {
         super(app, 'AuthRoutes');
@@ -17,8 +17,8 @@ class AuthRoutes extends common_routes_config_1.CommonRoutesConfig {
     configureRoutes() {
         this.app.post(`/auth`, [
             (0, express_validator_1.body)('googleId').isString(),
+            users_middleware_1.default.extractUserInfo,
             body_validation_middleware_1.default.verifyBodyFieldsErrors,
-            auth_middleware_1.default.verifyUserGoogleId,
             auth_controller_1.default.createJWT,
         ]);
         this.app.post(`/auth/refresh-token`, [
@@ -31,4 +31,4 @@ class AuthRoutes extends common_routes_config_1.CommonRoutesConfig {
     }
 }
 exports.AuthRoutes = AuthRoutes;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYXV0aC5yb3V0ZXMuY29uZmlnLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vYXV0aC9hdXRoLnJvdXRlcy5jb25maWcudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7O0FBQUEseUVBQW9FO0FBQ3BFLG9GQUEyRDtBQUMzRCxtRkFBMEQ7QUFFMUQsaUhBQXVGO0FBQ3ZGLHlEQUF5QztBQUN6QyxpRkFBd0Q7QUFFeEQsTUFBYSxVQUFXLFNBQVEseUNBQWtCO0lBQzlDLFlBQVksR0FBd0I7UUFDaEMsS0FBSyxDQUFDLEdBQUcsRUFBRSxZQUFZLENBQUMsQ0FBQztJQUM3QixDQUFDO0lBRUQsZUFBZTtRQUNYLElBQUksQ0FBQyxHQUFHLENBQUMsSUFBSSxDQUFDLE9BQU8sRUFBRTtZQUNuQixJQUFBLHdCQUFJLEVBQUMsVUFBVSxDQUFDLENBQUMsUUFBUSxFQUFFO1lBQzNCLG9DQUF3QixDQUFDLHNCQUFzQjtZQUMvQyx5QkFBYyxDQUFDLGtCQUFrQjtZQUNqQyx5QkFBYyxDQUFDLFNBQVM7U0FDM0IsQ0FBQyxDQUFDO1FBRUgsSUFBSSxDQUFDLEdBQUcsQ0FBQyxJQUFJLENBQUMscUJBQXFCLEVBQUU7WUFDakMsd0JBQWEsQ0FBQyxjQUFjO1lBQzVCLHdCQUFhLENBQUMsc0JBQXNCO1lBQ3BDLHdCQUFhLENBQUMsa0JBQWtCO1lBQ2hDLHlCQUFjLENBQUMsU0FBUztTQUMzQixDQUFDLENBQUM7UUFDSCxPQUFPLElBQUksQ0FBQyxHQUFHLENBQUM7SUFDcEIsQ0FBQztDQUNKO0FBckJELGdDQXFCQyJ9
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYXV0aC5yb3V0ZXMuY29uZmlnLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vYXV0aC9hdXRoLnJvdXRlcy5jb25maWcudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7O0FBQUEseUVBQW9FO0FBQ3BFLG9GQUEyRDtBQUczRCxpSEFBdUY7QUFDdkYseURBQXlDO0FBQ3pDLGlGQUF3RDtBQUN4RCw0RkFBbUU7QUFFbkUsTUFBYSxVQUFXLFNBQVEseUNBQWtCO0lBQzlDLFlBQVksR0FBd0I7UUFDaEMsS0FBSyxDQUFDLEdBQUcsRUFBRSxZQUFZLENBQUMsQ0FBQztJQUM3QixDQUFDO0lBRUQsZUFBZTtRQUNYLElBQUksQ0FBQyxHQUFHLENBQUMsSUFBSSxDQUFDLE9BQU8sRUFBRTtZQUNuQixJQUFBLHdCQUFJLEVBQUMsVUFBVSxDQUFDLENBQUMsUUFBUSxFQUFFO1lBQzNCLDBCQUFlLENBQUMsZUFBZTtZQUMvQixvQ0FBd0IsQ0FBQyxzQkFBc0I7WUFDL0MseUJBQWMsQ0FBQyxTQUFTO1NBQzNCLENBQUMsQ0FBQztRQUVILElBQUksQ0FBQyxHQUFHLENBQUMsSUFBSSxDQUFDLHFCQUFxQixFQUFFO1lBQ2pDLHdCQUFhLENBQUMsY0FBYztZQUM1Qix3QkFBYSxDQUFDLHNCQUFzQjtZQUNwQyx3QkFBYSxDQUFDLGtCQUFrQjtZQUNoQyx5QkFBYyxDQUFDLFNBQVM7U0FDM0IsQ0FBQyxDQUFDO1FBQ0gsT0FBTyxJQUFJLENBQUMsR0FBRyxDQUFDO0lBQ3BCLENBQUM7Q0FDSjtBQXJCRCxnQ0FxQkMifQ==

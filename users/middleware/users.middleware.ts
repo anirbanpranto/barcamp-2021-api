@@ -12,9 +12,10 @@ class UsersMiddleware {
         res: express.Response,
         next: express.NextFunction
     ) {
+      try {
         const ticket = await client.verifyIdToken({
-            idToken: req.body.googleId,
-            audience: process.env.CLIENT_ID,
+          idToken: req.body.googleId,
+          audience: process.env.CLIENT_ID,
         });
         const { email } = ticket.getPayload();
         const user = await userService.getUserByEmail(email);
@@ -23,6 +24,10 @@ class UsersMiddleware {
         } else {
             next();
         }
+      } catch (error) {
+          log(error);
+          res.status(500).send({ error: `googleId Incorrect` });
+      }
     }
 
     async validateSameEmailBelongToSameUser(
@@ -62,7 +67,7 @@ class UsersMiddleware {
             next();
         } else {
             res.status(404).send({
-                error: `User ${req.params.userId} not found`,
+                error: `User ${req.params.userId} not found!`,
             });
         }
     }
@@ -75,7 +80,35 @@ class UsersMiddleware {
         req.body.id = req.params.userId;
         next();
     }
-    
+
+    async extractUserInfo(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) {
+        try {        
+          const ticket = await client.verifyIdToken({
+            idToken: req.body.googleId,
+            audience: process.env.CLIENT_ID,
+          });
+          const { email } = await ticket.getPayload();
+          // console.log(ticket.getPayload());
+          const user = await userService.getUserByEmail(email);
+          //console.log(user);
+          // @ts-expect-error
+          req.body.email = user.email;
+          // @ts-expect-error
+          req.body.userId = user._id;
+          // @ts-expect-error
+          req.body.permissionFlags = user.permissionFlags
+          next();
+          
+        } catch (error) {
+          log(error);
+          res.status(500).send({ error: `Token invalid` });
+        }
+
+    }
 }
 
 export default new UsersMiddleware();

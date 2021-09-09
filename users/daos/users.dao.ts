@@ -13,7 +13,6 @@ class UsersDao {
     userSchema = new this.Schema({
         _id: String,
         email: String,
-        googleId: { type: String, select: false },
         firstName: String,
         lastName: String,
         permissionFlags: Number,
@@ -66,12 +65,6 @@ class UsersDao {
 
     async removeUserById(userId: string) {
         return this.User.deleteOne({ _id: userId }).exec();
-    }
-
-    async getUserByEmailWithGoogleId(email: string) {
-        return this.User.findOne({ email: email })
-            .select('_id email permissionFlags +googleId')
-            .exec();
     }
     
 }

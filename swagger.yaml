@@ -1,20 +1,346 @@
 swagger: '2.0'
 info:
-  description: 'This is barcamp 2021 api'
-  openapi: '3.0.0'
-  version: '1.0.0'
-  title: 'Barcamp 2021'
-  termsOfService: 'http://swagger.io/terms/'
-  contact:
-    email: 'shaunmak@invanique.com'
-  license:
-    name: 'Apache 2.0'
-    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-host: 'api.barcamp-2021.org'
-basePath: '/v1'
-schemes:
-  - 'https'
-  - 'http'
-externalDocs:
-  description: 'Find out more about Swagger'
-  url: 'http://swagger.io'
+  version: '1.0'
+  title: Barcamp 2021 API
+  description: Backend API for Bar Camp Cyberjaya 2021 Registration and Voting app.
+  contact: {}
+host: DefaultParameterValue
+basePath: /
+securityDefinitions: {}
+schemes: []
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /auth:
+    post:
+      description: ''
+      summary: Login
+      tags:
+      - Auth
+      operationId: Login
+      deprecated: false
+      produces:
+      - application/json
+      consumes:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/LoginRequest'
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: object
+          headers: {}
+  /users/:
+    get:
+      description: ''
+      summary: Get all users
+      tags:
+      - Users
+      operationId: Getallusers
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: object
+          headers: {}
+  /users/3BX8TSpFG:
+    patch:
+      description: ''
+      summary: Path single user
+      tags:
+      - Users
+      operationId: Pathsingleuser
+      deprecated: false
+      produces:
+      - application/json
+      consumes:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/PathsingleuserRequest'
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: object
+          headers: {}
+  /users:
+    post:
+      description: ''
+      summary: Create single user
+      tags:
+      - Users
+      operationId: Createsingleuser
+      deprecated: false
+      produces:
+      - application/json
+      consumes:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/CreatesingleuserRequest'
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: object
+          headers: {}
+  /topics:
+    get:
+      description: ''
+      summary: Get all topics
+      tags:
+      - Topics
+      operationId: Getalltopics
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: object
+          headers: {}
+    post:
+      description: ''
+      summary: Create single topic
+      tags:
+      - Topics
+      operationId: Createsingletopic
+      deprecated: false
+      produces:
+      - application/json
+      consumes:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/CreatesingletopicRequest'
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: object
+          headers: {}
+  /votes:
+    get:
+      description: ''
+      summary: Get all votes
+      tags:
+      - Votes
+      operationId: Getallvotes
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: object
+          headers: {}
+    post:
+      description: ''
+      summary: Create single vote
+      tags:
+      - Votes
+      operationId: Createsinglevote
+      deprecated: false
+      produces:
+      - application/json
+      consumes:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/CreatesinglevoteRequest'
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: object
+          headers: {}
+definitions:
+  LoginRequest:
+    title: LoginRequest
+    example:
+      googleId: eyJhbGciOiJSUzI1NiIsImtpZCI6Ijk5MWIwNjM2YWFkYTM0MWM1YTA4ZTBkOGYyNDA2OTcyMDY0ZGM4ZWQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiMjk1MDExNzA0ODUyLTluOTZxOXRuMHI4am1ybWRvaDBsdHJrdTRzcW05b2JqLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMjk1MDExNzA0ODUyLTluOTZxOXRuMHI4am1ybWRvaDBsdHJrdTRzcW05b2JqLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTAzNDYyNzM1NjcxNjM3MTQ2OTE3IiwiaGQiOiJzdHVkZW50Lm1tdS5lZHUubXkiLCJlbWFpbCI6IjExODEyMDMzMzRAc3R1ZGVudC5tbXUuZWR1Lm15IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJLT1VyYjJQSEE5WDBCY1dDQ2h6Qy13IiwibmFtZSI6Ik1BSyBZRU4gV0VJIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hLS9BT2gxNEdpRmctZDUyZWNhYldGUXM0WkhPUVREcnhxd1NLOWlrd0FmOURzPXM5Ni1jIiwiZ2l2ZW5fbmFtZSI6Ik1BSyIsImZhbWlseV9uYW1lIjoiWUVOIFdFSSIsImxvY2FsZSI6ImVuLUdCIiwiaWF0IjoxNjMxMTQwNzU2LCJleHAiOjE2MzExNDQzNTYsImp0aSI6IjBhNmM5OWVjYTVkMjU3NDI5ZDliZmQ1MTFlYmMzNmU0ZDZlZDVkMmIifQ.Rxz9hinGrwHZ5b6loBkA310Cy_yaoOO3uEupEXnImcr585dEBLY265xukctz6iBCjXAGr425O50mccqqePYg99kigEgD8P0L9EZJUZ9m14K_gwMZslQ-JJ4rWRLozw4TkuTOpJuqVE57AZITe3azSlEZG3RnWd5x3L3Lh5l2VExd-LbS-AHHQ211f1Ll3wrGqdPsIrRwPYIh4F9W_-_Tu3vzTwlbOQstviC5Y2zzVxNFZLG0GzsJRgYHyYC5jNeXfIB4xiu7M4EHZAcrpNBS2hvZaW_c8E5sHFRZs6PKKFrE8WZNqiFu6L7cS5pR4ZSUfNxxV6AOVLPs_R-il5-JMw
+    type: object
+    properties:
+      googleId:
+        type: string
+    required:
+    - googleId
+  PathsingleuserRequest:
+    title: PathsingleuserRequest
+    example:
+      firstName: qwe
+      lastName: qwe
+    type: object
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
+    required:
+    - firstName
+    - lastName
+  CreatesingleuserRequest:
+    title: CreatesingleuserRequest
+    example:
+      googleId: eyJhbGciOiJSUzI1NiIsImtpZCI6Ijk5MWIwNjM2YWFkYTM0MWM1YTA4ZTBkOGYyNDA2OTcyMDY0ZGM4ZWQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiMjk1MDExNzA0ODUyLTluOTZxOXRuMHI4am1ybWRvaDBsdHJrdTRzcW05b2JqLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMjk1MDExNzA0ODUyLTluOTZxOXRuMHI4am1ybWRvaDBsdHJrdTRzcW05b2JqLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTAzNDYyNzM1NjcxNjM3MTQ2OTE3IiwiaGQiOiJzdHVkZW50Lm1tdS5lZHUubXkiLCJlbWFpbCI6IjExODEyMDMzMzRAc3R1ZGVudC5tbXUuZWR1Lm15IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJPdm1DVzVhSWJPU2xqYi04OUZ3Q2lBIiwibmFtZSI6Ik1BSyBZRU4gV0VJIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hLS9BT2gxNEdpRmctZDUyZWNhYldGUXM0WkhPUVREcnhxd1NLOWlrd0FmOURzPXM5Ni1jIiwiZ2l2ZW5fbmFtZSI6Ik1BSyIsImZhbWlseV9uYW1lIjoiWUVOIFdFSSIsImxvY2FsZSI6ImVuLUdCIiwiaWF0IjoxNjMxMTMyMDU1LCJleHAiOjE2MzExMzU2NTUsImp0aSI6IjU4YzlkMmQ5MmM0ZDQ0MTQ3NzM0MjBmNWZlOWRjODU1YTRmYjI2NTYifQ.CkVeVbBKKADV4kX3o3u7V_Lk6ldV4aAl9YO-Q9-JX6uj4yZGgr6sM9jabruZOThy-tchhmo4a-yGw_lMJrLNIoiUlnwqy3g7F9HDpw7h6FxaJtIFZB2ALINdn72CQAiVAxtfhOg5dGzykyjIrgXQxnqtNh23JtVZgi7RLSSXW4lfUXQ43FE-Tq9vX2r6t8M7_KYQI-e9TVVXKfQSS6ZylLEREzDP-OnK27f66vob2b8RyFwoXBN9BUn8hoPP5KEwYjQnORiydmEsS4pMv_6gauilQBJ7FX-eNFxeQSR1627EEZggiUl0GAtdrzN9qgmyQpfbjWLfLxilRshwRbNIHA
+    type: object
+    properties:
+      googleId:
+        type: string
+    required:
+    - googleId
+  CreatesingletopicRequest:
+    title: CreatesingletopicRequest
+    example:
+      name: Earth is flat?
+      user: 3BX8TSpFG
+      theme: non-tech
+      description: blabla
+      contact: '-'
+      self_description: '-'
+    type: object
+    properties:
+      name:
+        type: string
+      user:
+        type: string
+      theme:
+        type: string
+      description:
+        type: string
+      contact:
+        type: string
+      self_description:
+        type: string
+    required:
+    - name
+    - user
+    - theme
+    - description
+    - contact
+    - self_description
+  CreatesinglevoteRequest:
+    title: CreatesinglevoteRequest
+    example:
+      userId: 3BX8TSpFG
+      topicId: fopRqnuRz
+      vote: speaker
+    type: object
+    properties:
+      userId:
+        type: string
+      topicId:
+        type: string
+      vote:
+        type: string
+    required:
+    - userId
+    - topicId
+    - vote
+tags:
+- name: Auth
+  description: ''
+- name: Users
+  description: ''
+- name: Topics
+  description: ''
+- name: Votes
+  description: ''
