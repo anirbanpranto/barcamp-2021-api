@@ -15,8 +15,8 @@ export class AuthRoutes extends CommonRoutesConfig {
     configureRoutes(): express.Application {
         this.app.post(`/auth`, [
             body('googleId').isString(),
-            usersMiddleware.extractUserInfo,
             BodyValidationMiddleware.verifyBodyFieldsErrors,
+            usersMiddleware.createAccountIfNotExists,
             authController.createJWT,
         ]);
 
