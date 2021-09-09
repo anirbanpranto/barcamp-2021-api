@@ -107,7 +107,49 @@ class UsersMiddleware {
           log(error);
           res.status(500).send({ error: `Token invalid` });
         }
+    }
 
+    async createAccountIfNotExists(
+      req: express.Request,
+      res: express.Response,
+      next: express.NextFunction
+    ) {
+      try {        
+        const ticket = await client.verifyIdToken({
+          idToken: req.body.googleId,
+          audience: process.env.CLIENT_ID,
+        });
+        const { email } = await ticket.getPayload();
+        const user = await userService.getUserByEmail(email);
+
+        if (!user) {
+          req.body.email = email;
+          const newUser = await userService.create(req.body);
+
+          if(newUser) {
+            // @ts-expect-error
+            req.body.email = newUser.email;
+            // @ts-expect-error
+            req.body.userId = newUser._id;
+            // @ts-expect-error
+            req.body.permissionFlags = newUser.permissionFlags
+            // log('new user created' + newUser)
+          }else {
+            res.status(404).send({ error: `User does not exists, auto sign up failed` });
+          }
+        }else{
+          // @ts-expect-error
+          req.body.email = user.email;
+          req.body.userId = user._id;
+          // @ts-expect-error
+          req.body.permissionFlags = user.permissionFlags
+        }
+
+        next();
+      } catch (error) {
+        log(error);
+        res.status(500).send({ error: `Login failure or token invalid` });
+      }
     }
 }
 

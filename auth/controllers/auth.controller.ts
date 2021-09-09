@@ -36,6 +36,10 @@ class AuthController {
             return res.status(500).send();
         }
     }
+
+    async checkAuth(req: express.Request, res: express.Response) {
+      return res.status(200).send();
+    }
 }
 
 export default new AuthController();
