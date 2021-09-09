@@ -18,13 +18,14 @@ export class VotesRoutes extends CommonRoutesConfig {
       .get(jwtMiddleware.validJWTNeeded, VotesController.listVotes)
       .post(
         body('userId').isLength({min: 1}).withMessage('Must include userId'), 
-        body('topicId').isLength({min: 1}).withMessage('Must include topicId'), 
+        body('topicId').isArray({ min: 5, max: 5 }).withMessage('Must propose exactly 5 topics'),
         body('vote').exists().matches(/^(speaker|topic)$/).withMessage('Vote needs to exist and value is either speaker or topic'),
         BodyValidationMiddleware.verifyBodyFieldsErrors,  
         jwtMiddleware.validJWTNeeded, 
         VotesMiddleware.validateUserExists,  
+        VotesMiddleware.validateVoteArrDuplicates,
+        VotesMiddleware.validateAlreadyVoted,
         VotesMiddleware.validateTopicExists,
-        VotesMiddleware.validateVoteExists,
         VotesController.createVote
       );
 

@@ -32,6 +32,7 @@ export class TopicsRoutes extends CommonRoutesConfig {
                 body('institute').isString().optional(),
                 body('company').isString().optional(),
                 body('self_description').isString(),
+                jwtMiddleware.validJWTNeeded,
                 BodyValidationMiddleware.verifyBodyFieldsErrors,
                 TopicsMiddleware.validateUserExists,
                 TopicsMiddleware.validateUserDoesntHaveTopic,
