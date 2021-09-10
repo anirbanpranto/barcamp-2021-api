@@ -56,9 +56,11 @@ export class UsersRoutes extends CommonRoutesConfig {
         ]);
 
         this.app.patch(`/users/:userId`, [
-            body('email').isEmail().optional(),
-            body('firstName').isString().optional(),
+            body('fullName').isString().optional(),
+            body('age').isNumeric().optional(),
+            body('contactNumber').isString().optional(),
             body('permissionFlags').isInt().optional(),
+            body('companyOrInstitution').isString().optional(),
             BodyValidationMiddleware.verifyBodyFieldsErrors,
             UsersMiddleware.validatePatchEmail,
             permissionMiddleware.userCantChangePermission,

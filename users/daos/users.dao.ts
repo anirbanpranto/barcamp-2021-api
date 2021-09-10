@@ -28,7 +28,6 @@ class UsersDao {
     }
 
     async addUser(userFields: CreateUserDto) {
-        log(userFields);
         const userId = shortid.generate();
         const user = new this.User({
             _id: userId,
@@ -36,7 +35,7 @@ class UsersDao {
             permissionFlags: 1,
         });
         await user.save();
-        return userId;
+        return user;
     }
 
     async getUserByEmail(email: string) {
