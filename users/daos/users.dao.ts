@@ -15,6 +15,7 @@ class UsersDao {
         email: String,
         firstName: String,
         lastName: String,
+        picture: String,
         permissionFlags: Number,
     }, { id: false });
 
@@ -25,6 +26,7 @@ class UsersDao {
     }
 
     async addUser(userFields: CreateUserDto) {
+        log(userFields);
         const userId = shortid.generate();
         const user = new this.User({
             _id: userId,

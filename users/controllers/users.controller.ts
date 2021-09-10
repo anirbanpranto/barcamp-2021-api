@@ -33,8 +33,9 @@ class UsersController {
             idToken: req.body.googleId,
             audience: process.env.CLIENT_ID,
         });
-        const { email } = ticket.getPayload();
+        const { email, picture } = ticket.getPayload();
         req.body.email = email;
+        req.body.picture = picture;
         const userId = await usersService.create(req.body);
         res.status(201).send({ id: userId });
     }
