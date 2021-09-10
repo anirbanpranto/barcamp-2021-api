@@ -34,6 +34,7 @@ export class VotesRoutes extends CommonRoutesConfig {
       .route('/votes/:userId')
       .get(
         jwtMiddleware.validJWTNeeded,
+        jwtMiddleware.validateParamUserIdIsUser,
         votesMiddleware.validateUserExists,
         VotesController.getVote
       )

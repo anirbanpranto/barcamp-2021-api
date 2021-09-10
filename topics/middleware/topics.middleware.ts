@@ -5,13 +5,12 @@ import debug from 'debug';
 
 const log: debug.IDebugger = debug('app:topics-controller');
 class TopicsMiddleware {
-    
     async validateUserDoesntHaveTopic(
         req: express.Request,
         res: express.Response,
         next: express.NextFunction
     ) {
-        const user = await topicService.findUser(req.body.user);
+        const user = await topicService.findByUser(req.body.user);
         console.log(user);
         if (user) {
             res.status(400).send({ error: `A topic for this user already exists` });
@@ -58,6 +57,15 @@ class TopicsMiddleware {
         next: express.NextFunction
     ) {
         req.body.id = req.params.topicId;
+        next();
+    }
+
+    async extractUserId(
+      req: express.Request,
+      res: express.Response,
+      next: express.NextFunction
+    ) {
+        req.body.id = req.params.userId;
         next();
     }
     

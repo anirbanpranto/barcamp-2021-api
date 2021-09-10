@@ -81,6 +81,14 @@ export class TopicsRoutes extends CommonRoutesConfig {
             TopicsController.patch
         ]);
 
+        this.app.get(
+          `/topicsByUser/:userId`, 
+          jwtMiddleware.validJWTNeeded, 
+          jwtMiddleware.validateParamUserIdIsUser,
+          TopicsMiddleware.extractUserId, 
+          TopicsController.getTopicByUser
+        );
+
         return this.app;
     }
 }
