@@ -119,11 +119,12 @@ class UsersMiddleware {
           idToken: req.body.googleId,
           audience: process.env.CLIENT_ID,
         });
-        const { email } = await ticket.getPayload();
+        const { email, picture } = await ticket.getPayload();
         const user = await userService.getUserByEmail(email);
 
         if (!user) {
           req.body.email = email;
+          req.body.picture = picture;
           const newUser = await userService.create(req.body);
 
           if(newUser) {
