@@ -22,7 +22,7 @@ class TopicsService implements CRUD {
         return TopicsDao.getTopics(limit, page);
     }
 
-    async findUser(userId : string) {
+    async findByUser(userId : string) {
         return topicsDao.checkUser(userId);
     }
 

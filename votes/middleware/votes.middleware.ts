@@ -13,7 +13,7 @@ class VotesMiddleware {
       res: express.Response,
       next: express.NextFunction
   ) {
-      const user = await userService.readById(req.body.userId);
+      const user = await userService.readById(req.body.id);
       if (user) {
           res.locals.user = user;
           next();
