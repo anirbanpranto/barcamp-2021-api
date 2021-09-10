@@ -13,8 +13,10 @@ class UsersDao {
     userSchema = new this.Schema({
         _id: String,
         email: String,
-        firstName: String,
-        lastName: String,
+        fullName: String,
+        age: Number,
+        contactNumber: String,
+        companyOrInstitution: String,
         picture: String,
         permissionFlags: Number,
     }, { id: false });
@@ -61,6 +63,13 @@ class UsersDao {
             { $set: userFields },
             { new: true }
         ).exec();
+
+        // @ts-expect-error
+        if(existingUser.fullName && existingUser.age && existingUser.contactNumber) {
+            this.updatePermissionById(userId, 2);
+        }else{
+            this.updatePermissionById(userId, 1);
+        }
     
         return existingUser;
     }
@@ -68,7 +77,14 @@ class UsersDao {
     async removeUserById(userId: string) {
         return this.User.deleteOne({ _id: userId }).exec();
     }
-    
+
+    async updatePermissionById(userId: string, permissionFlags: number) {
+        return this.User.findOneAndUpdate(
+            { _id: userId },
+            { $set: { permissionFlags: permissionFlags } },
+            { new: true }
+        ).exec();
+    }
 }
 
 export default new UsersDao();

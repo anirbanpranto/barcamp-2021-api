@@ -51,6 +51,18 @@ class TopicsMiddleware {
         }
     }
 
+    async validateUserIsOwner(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) {
+        if (res.locals.jwt.userId === req.body.user) {
+            next();
+        } else {
+            return res.status(403).send();
+        }
+    }
+
     async extractTopicId(
         req: express.Request,
         res: express.Response,

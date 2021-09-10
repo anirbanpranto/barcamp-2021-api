@@ -36,6 +36,9 @@ export class UsersRoutes extends CommonRoutesConfig {
             .all(
                 UsersMiddleware.validateUserExists,
                 jwtMiddleware.validJWTNeeded,
+                permissionMiddleware.permissionFlagRequired(
+                  PermissionFlag.BASIC_PERMISSION
+                ),
                 permissionMiddleware.onlySameUserOrAdminCanDoThisAction
             )
             .get(UsersController.getUserById)

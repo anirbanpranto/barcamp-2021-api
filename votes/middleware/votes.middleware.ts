@@ -8,7 +8,7 @@ import votesService from '../services/votes.service';
 const log: debug.IDebugger = debug('app:users-controller');
 
 class VotesMiddleware {
-  async validateUserExists(
+  async validateUserExistsWithParam(
       req: express.Request,
       res: express.Response,
       next: express.NextFunction
@@ -21,6 +21,34 @@ class VotesMiddleware {
           res.status(404).send({
               error: `User ${req.body.userId} not found`,
           });
+      }
+  }
+
+  async validateUserExistsWithBody(
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) {
+      const user = await userService.readById(req.body.userId);
+      if (user) {
+          res.locals.user = user;
+          next();
+      } else {
+          res.status(404).send({
+              error: `User ${req.body.userId} not found`,
+          });
+      }
+  }
+
+  async validateUserIsOwner(
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) {
+      if (res.locals.jwt.userId === req.body.userId) {
+          next();
+      } else {
+          return res.status(403).send();
       }
   }
 

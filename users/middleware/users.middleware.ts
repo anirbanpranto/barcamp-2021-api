@@ -133,8 +133,9 @@ class UsersMiddleware {
             // @ts-expect-error
             req.body.userId = newUser._id;
             // @ts-expect-error
+            req.body.picture = user.picture || '';
+            // @ts-expect-error
             req.body.permissionFlags = newUser.permissionFlags
-            // log('new user created' + newUser)
           }else {
             res.status(404).send({ error: `User does not exists, auto sign up failed` });
           }
@@ -142,6 +143,8 @@ class UsersMiddleware {
           // @ts-expect-error
           req.body.email = user.email;
           req.body.userId = user._id;
+          // @ts-expect-error
+          req.body.picture = user.picture || '';
           // @ts-expect-error
           req.body.permissionFlags = user.permissionFlags
         }
