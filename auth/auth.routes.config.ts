@@ -14,7 +14,7 @@ export class AuthRoutes extends CommonRoutesConfig {
 
     configureRoutes(): express.Application {
 
-        this.app.get(
+      this.app.get(
           `/auth/check`, 
           jwtMiddleware.validJWTNeeded, 
           authController.checkAuth

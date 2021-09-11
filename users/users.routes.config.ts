@@ -36,6 +36,9 @@ export class UsersRoutes extends CommonRoutesConfig {
             .all(
                 UsersMiddleware.validateUserExists,
                 jwtMiddleware.validJWTNeeded,
+                permissionMiddleware.permissionFlagRequired(
+                  PermissionFlag.BASIC_PERMISSION
+                ),
                 permissionMiddleware.onlySameUserOrAdminCanDoThisAction
             )
             .get(UsersController.getUserById)
@@ -53,9 +56,11 @@ export class UsersRoutes extends CommonRoutesConfig {
         ]);
 
         this.app.patch(`/users/:userId`, [
-            body('email').isEmail().optional(),
-            body('firstName').isString().optional(),
+            body('fullName').isString().optional(),
+            body('age').isNumeric().optional(),
+            body('contactNumber').isString().optional(),
             body('permissionFlags').isInt().optional(),
+            body('companyOrInstitution').isString().optional(),
             BodyValidationMiddleware.verifyBodyFieldsErrors,
             UsersMiddleware.validatePatchEmail,
             permissionMiddleware.userCantChangePermission,
@@ -65,11 +70,6 @@ export class UsersRoutes extends CommonRoutesConfig {
         this.app.put(`/users/:userId/permissionFlags/:permissionFlags`, [
             jwtMiddleware.validJWTNeeded,
             permissionMiddleware.onlySameUserOrAdminCanDoThisAction,
-        
-            // Note: The above two pieces of middleware are needed despite
-            // the reference to them in the .all() call, because that only covers
-            // /users/:userId, not anything beneath it in the hierarchy
-        
             permissionMiddleware.permissionFlagRequired(
                 PermissionFlag.USER_PERMISSION
             ),

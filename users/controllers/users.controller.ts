@@ -11,6 +11,7 @@ import argon2 from 'argon2';
 import debug from 'debug';
 
 import { PatchUserDto } from '../dto/patch.user.dto';
+import authController from '../../auth/controllers/auth.controller';
 
 const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.CLIENT_ID);
@@ -44,8 +45,18 @@ class UsersController {
         if (req.body.password) {
             req.body.password = await argon2.hash(req.body.password);
         }
-        log(await usersService.patchById(req.body.id, req.body));
-        res.status(204).send();
+        const existingUser = await usersService.patchById(req.body.id, req.body)
+        if(existingUser){
+          // @ts-expect-error
+          req.body.email = existingUser.email;
+          // @ts-expect-error
+          req.body.userId = existingUser._id;
+          // @ts-expect-error
+          req.body.picture = existingUser.picture || ' ';
+          // @ts-expect-error
+          req.body.permissionFlags = existingUser.permissionFlags
+        }
+        authController.createJWT(req, res);
     }
 
     async put(req: express.Request, res: express.Response) {

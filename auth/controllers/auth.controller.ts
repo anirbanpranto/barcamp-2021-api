@@ -7,7 +7,6 @@ const log: debug.IDebugger = debug('app:auth-controller');
 
 class AuthController {
     async createJWT(req: express.Request, res: express.Response) {
-        // log(req.body)
         try {
             // @ts-expect-error
             const jwtSecret: string = process.env.JWT_SECRET;

@@ -13,8 +13,10 @@ class UsersDao {
     userSchema = new this.Schema({
         _id: String,
         email: String,
-        firstName: String,
-        lastName: String,
+        fullName: String,
+        age: Number,
+        contactNumber: String,
+        companyOrInstitution: String,
         picture: String,
         permissionFlags: Number,
     }, { id: false });
@@ -26,7 +28,6 @@ class UsersDao {
     }
 
     async addUser(userFields: CreateUserDto) {
-        log(userFields);
         const userId = shortid.generate();
         const user = new this.User({
             _id: userId,
@@ -34,7 +35,7 @@ class UsersDao {
             permissionFlags: 1,
         });
         await user.save();
-        return userId;
+        return user;
     }
 
     async getUserByEmail(email: string) {
@@ -56,19 +57,34 @@ class UsersDao {
         userId: string,
         userFields: PatchUserDto | PutUserDto
     ) {
+        let updatedUser = null;
         const existingUser = await this.User.findOneAndUpdate(
             { _id: userId },
             { $set: userFields },
             { new: true }
         ).exec();
+
+        // @ts-expect-error
+        if(existingUser.fullName && existingUser.age && existingUser.contactNumber) {
+          updatedUser = await this.updatePermissionById(userId, 2);
+        }else{
+          updatedUser = await this.updatePermissionById(userId, 1);
+        }
     
-        return existingUser;
+        return updatedUser;
     }
 
     async removeUserById(userId: string) {
         return this.User.deleteOne({ _id: userId }).exec();
     }
-    
+
+    async updatePermissionById(userId: string, permissionFlags: number) {
+        return this.User.findOneAndUpdate(
+            { _id: userId },
+            { $set: { permissionFlags: permissionFlags } },
+            { new: true }
+        ).exec();
+    }
 }
 
 export default new UsersDao();

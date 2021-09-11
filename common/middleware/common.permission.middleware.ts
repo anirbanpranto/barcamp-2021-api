@@ -15,16 +15,14 @@ class CommonPermissionMiddleware{
                 const userPermissionFlags = parseInt(
                     res.locals.jwt.permissionFlags
                 );
-                // console.log(res.locals.jwt);
-                // console.log(userPermissionFlags)
-                // console.log(requiredPermissionFlag)
-                if (userPermissionFlags & requiredPermissionFlag) {
+                if (userPermissionFlags >= requiredPermissionFlag) {
                     next();
                 } else {
-                    res.status(403).send();
+                    return res.status(403).send();
                 }
             } catch (e) {
                 log(e);
+                return res.status(500).send();
             }
         };
     }

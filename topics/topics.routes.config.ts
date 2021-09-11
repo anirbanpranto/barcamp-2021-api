@@ -32,8 +32,12 @@ export class TopicsRoutes extends CommonRoutesConfig {
                 body('institute').isString().optional(),
                 body('company').isString().optional(),
                 body('self_description').isString(),
-                jwtMiddleware.validJWTNeeded,
                 BodyValidationMiddleware.verifyBodyFieldsErrors,
+                jwtMiddleware.validJWTNeeded,
+                permissionMiddleware.permissionFlagRequired(
+                  PermissionFlag.USER_PERMISSION
+                ),
+                TopicsMiddleware.validateUserIsOwner,
                 TopicsMiddleware.validateUserExists,
                 TopicsMiddleware.validateUserDoesntHaveTopic,
                 TopicsController.createTopic
@@ -44,7 +48,10 @@ export class TopicsRoutes extends CommonRoutesConfig {
             .route(`/topics/:topicId`)
             .all(
                 TopicsMiddleware.validateTopicExists,
-                jwtMiddleware.validJWTNeeded
+                jwtMiddleware.validJWTNeeded,
+                permissionMiddleware.permissionFlagRequired(
+                  PermissionFlag.USER_PERMISSION
+                ),
             )
             .get(TopicsController.getTopicById)
             .delete(TopicsController.removeTopic);
@@ -75,15 +82,15 @@ export class TopicsRoutes extends CommonRoutesConfig {
             body('company').isString().optional(),
             body('self_description').isString().optional(),
             BodyValidationMiddleware.verifyBodyFieldsErrors,
-            permissionMiddleware.permissionFlagRequired(
-                PermissionFlag.USER_PERMISSION
-            ),
             TopicsController.patch
         ]);
 
         this.app.get(
           `/topicsByUser/:userId`, 
           jwtMiddleware.validJWTNeeded, 
+          permissionMiddleware.permissionFlagRequired(
+            PermissionFlag.USER_PERMISSION
+          ),
           jwtMiddleware.validateParamUserIdIsUser,
           TopicsMiddleware.extractUserId, 
           TopicsController.getTopicByUser

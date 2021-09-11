@@ -6,6 +6,8 @@ import { body } from 'express-validator';
 import express from 'express';
 import jwtMiddleware from '../auth/middleware/jwt.middleware';
 import votesMiddleware from './middleware/votes.middleware';
+import permissionMiddleware from '../common/middleware/common.permission.middleware';
+import { PermissionFlag } from '../common/middleware/common.permissionflag.enum';
 
 export class VotesRoutes extends CommonRoutesConfig {
   constructor(app: express.Application) {
@@ -15,14 +17,24 @@ export class VotesRoutes extends CommonRoutesConfig {
   configureRoutes(): express.Application{
     this.app
       .route('/votes')
-      .get(jwtMiddleware.validJWTNeeded, VotesController.listVotes)
+      .get(
+        jwtMiddleware.validJWTNeeded,         
+        permissionMiddleware.permissionFlagRequired(
+          PermissionFlag.USER_PERMISSION
+        ), 
+        VotesController.listVotes
+      )
       .post(
         body('userId').isLength({min: 1}).withMessage('Must include userId'), 
         body('topicId').isArray({ min: 5, max: 5 }).withMessage('Must propose exactly 5 topics'),
         body('vote').exists().matches(/^(speaker|topic)$/).withMessage('Vote needs to exist and value is either speaker or topic'),
         BodyValidationMiddleware.verifyBodyFieldsErrors,  
-        jwtMiddleware.validJWTNeeded, 
-        VotesMiddleware.validateUserExists,  
+        jwtMiddleware.validJWTNeeded,
+        permissionMiddleware.permissionFlagRequired(
+          PermissionFlag.USER_PERMISSION
+        ),
+        VotesMiddleware.validateUserExistsWithBody,
+        VotesMiddleware.validateUserIsOwner,
         VotesMiddleware.validateVoteArrDuplicates,
         VotesMiddleware.validateAlreadyVoted,
         VotesMiddleware.validateTopicExists,
@@ -34,8 +46,11 @@ export class VotesRoutes extends CommonRoutesConfig {
       .route('/votes/:userId')
       .get(
         jwtMiddleware.validJWTNeeded,
+        permissionMiddleware.permissionFlagRequired(
+          PermissionFlag.USER_PERMISSION
+        ),
         jwtMiddleware.validateParamUserIdIsUser,
-        votesMiddleware.validateUserExists,
+        votesMiddleware.validateUserExistsWithParam,
         VotesController.getVote
       )
 
