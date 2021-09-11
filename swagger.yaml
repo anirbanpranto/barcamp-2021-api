@@ -13,6 +13,28 @@ consumes:
 produces:
 - application/json
 paths:
+  /auth/check:
+    get:
+      description: ''
+      summary: Check Auth
+      tags:
+      - Auth
+      operationId: CheckAuth
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: object
+          headers: {}
   /auth:
     post:
       description: ''
@@ -48,6 +70,28 @@ paths:
           schema:
             type: object
           headers: {}
+  /users/gmoSUrSXD:
+    get:
+      description: ''
+      summary: Get single user
+      tags:
+      - Users
+      operationId: Getsingleuser
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: object
+          headers: {}
   /users/:
     get:
       description: ''
@@ -70,13 +114,13 @@ paths:
           schema:
             type: object
           headers: {}
-  /users/3BX8TSpFG:
+  /users/RHwXNZQpG:
     patch:
       description: ''
-      summary: Path single user
+      summary: Patch single user
       tags:
       - Users
-      operationId: Pathsingleuser
+      operationId: Patchsingleuser
       deprecated: false
       produces:
       - application/json
@@ -93,7 +137,7 @@ paths:
         required: true
         description: ''
         schema:
-          $ref: '#/definitions/PathsingleuserRequest'
+          $ref: '#/definitions/PatchsingleuserRequest'
       - name: Content-Type
         in: header
         required: true
@@ -134,6 +178,28 @@ paths:
         required: true
         type: string
         description: ''
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: object
+          headers: {}
+  /topicsByUser/YbnviMIhh:
+    get:
+      description: ''
+      summary: Get by user
+      tags:
+      - Topics
+      operationId: Getbyuser
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
       responses:
         '200':
           description: ''
@@ -196,6 +262,28 @@ paths:
           schema:
             type: object
           headers: {}
+  /votes/YbnviMIhh:
+    get:
+      description: ''
+      summary: Get by user
+      tags:
+      - Votes
+      operationId: Getbyuser1
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: object
+          headers: {}
   /votes:
     get:
       description: ''
@@ -220,10 +308,10 @@ paths:
           headers: {}
     post:
       description: ''
-      summary: Create single vote
+      summary: Create multiple votes
       tags:
       - Votes
-      operationId: Createsinglevote
+      operationId: Createmultiplevotes
       deprecated: false
       produces:
       - application/json
@@ -240,7 +328,7 @@ paths:
         required: true
         description: ''
         schema:
-          $ref: '#/definitions/CreatesinglevoteRequest'
+          $ref: '#/definitions/CreatemultiplevotesRequest'
       - name: Content-Type
         in: header
         required: true
@@ -256,31 +344,40 @@ definitions:
   LoginRequest:
     title: LoginRequest
     example:
-      googleId: eyJhbGciOiJSUzI1NiIsImtpZCI6Ijk5MWIwNjM2YWFkYTM0MWM1YTA4ZTBkOGYyNDA2OTcyMDY0ZGM4ZWQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiMjk1MDExNzA0ODUyLTluOTZxOXRuMHI4am1ybWRvaDBsdHJrdTRzcW05b2JqLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMjk1MDExNzA0ODUyLTluOTZxOXRuMHI4am1ybWRvaDBsdHJrdTRzcW05b2JqLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTAzNDYyNzM1NjcxNjM3MTQ2OTE3IiwiaGQiOiJzdHVkZW50Lm1tdS5lZHUubXkiLCJlbWFpbCI6IjExODEyMDMzMzRAc3R1ZGVudC5tbXUuZWR1Lm15IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJLT1VyYjJQSEE5WDBCY1dDQ2h6Qy13IiwibmFtZSI6Ik1BSyBZRU4gV0VJIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hLS9BT2gxNEdpRmctZDUyZWNhYldGUXM0WkhPUVREcnhxd1NLOWlrd0FmOURzPXM5Ni1jIiwiZ2l2ZW5fbmFtZSI6Ik1BSyIsImZhbWlseV9uYW1lIjoiWUVOIFdFSSIsImxvY2FsZSI6ImVuLUdCIiwiaWF0IjoxNjMxMTQwNzU2LCJleHAiOjE2MzExNDQzNTYsImp0aSI6IjBhNmM5OWVjYTVkMjU3NDI5ZDliZmQ1MTFlYmMzNmU0ZDZlZDVkMmIifQ.Rxz9hinGrwHZ5b6loBkA310Cy_yaoOO3uEupEXnImcr585dEBLY265xukctz6iBCjXAGr425O50mccqqePYg99kigEgD8P0L9EZJUZ9m14K_gwMZslQ-JJ4rWRLozw4TkuTOpJuqVE57AZITe3azSlEZG3RnWd5x3L3Lh5l2VExd-LbS-AHHQ211f1Ll3wrGqdPsIrRwPYIh4F9W_-_Tu3vzTwlbOQstviC5Y2zzVxNFZLG0GzsJRgYHyYC5jNeXfIB4xiu7M4EHZAcrpNBS2hvZaW_c8E5sHFRZs6PKKFrE8WZNqiFu6L7cS5pR4ZSUfNxxV6AOVLPs_R-il5-JMw
+      googleId: eyJhbGciOiJSUzI1NiIsImtpZCI6Ijk5MWIwNjM2YWFkYTM0MWM1YTA4ZTBkOGYyNDA2OTcyMDY0ZGM4ZWQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiMjk1MDExNzA0ODUyLTluOTZxOXRuMHI4am1ybWRvaDBsdHJrdTRzcW05b2JqLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMjk1MDExNzA0ODUyLTluOTZxOXRuMHI4am1ybWRvaDBsdHJrdTRzcW05b2JqLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTA1ODIxMjQ3ODMxOTQyMjI1MDM1IiwiZW1haWwiOiJzaGFvbm1ha0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6IlF2Um03MWNuZlp6RjVFYmRXMHI3Q1EiLCJuYW1lIjoiU2hhdW4gTWFrIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hLS9BT2gxNEdocEhHaHRFUDFUY3NDTWRsTkduNGVGeVdvemk3RUdwTjBuYlNWZ053PXM5Ni1jIiwiZ2l2ZW5fbmFtZSI6IlNoYXVuIiwiZmFtaWx5X25hbWUiOiJNYWsiLCJsb2NhbGUiOiJlbiIsImlhdCI6MTYzMTI5MjM4MCwiZXhwIjoxNjMxMjk1OTgwLCJqdGkiOiJlOTFmMDhmZmRlYTE5YmQzYjAxYzFkZDI2NzA0NzliNmQ4NDVhOTZiIn0.IcYsaCZOVbnLD2wYt25yrRqDizFAASkFdS_QPjC-s4ha00dnByat05zQmDl62_ekZhEQdtz8jtP3nL2HbM1dMGjzh4sA-APfuDMPUXd3Ry0C3nIQ2NVC0DqpJicgBkWQwhgo1zbkvDsP-OZJq0YGioPjGqY8bsls9kvhZCQPhW0LBmmUWwG6kRQurgn1wihMEURc_3OG6RgkhC4Vf16d9kReqPKZuaVCzv_N2HZWxt0a1828HobVDTjmmFNPk3D5zxeuj81CcJhqXTEhpux5Zx-at6L-oFZ7tMDZhE_GIrS22IK6Wzj22qcUV6_ghUGEkFilbRjrxex7rhZjgqhZ_Q
     type: object
     properties:
       googleId:
         type: string
     required:
     - googleId
-  PathsingleuserRequest:
-    title: PathsingleuserRequest
+  PatchsingleuserRequest:
+    title: PatchsingleuserRequest
     example:
-      firstName: qwe
-      lastName: qwe
+      fullName: Mak Yen Wei
+      age: 12
+      contactNumber: '123456'
+      companyOrInstitution: ''
     type: object
     properties:
-      firstName:
+      fullName:
         type: string
-      lastName:
+      age:
+        type: integer
+        format: int32
+      contactNumber:
+        type: string
+      companyOrInstitution:
         type: string
     required:
-    - firstName
-    - lastName
+    - fullName
+    - age
+    - contactNumber
+    - companyOrInstitution
   CreatesingleuserRequest:
     title: CreatesingleuserRequest
     example:
-      googleId: eyJhbGciOiJSUzI1NiIsImtpZCI6Ijk5MWIwNjM2YWFkYTM0MWM1YTA4ZTBkOGYyNDA2OTcyMDY0ZGM4ZWQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiMjk1MDExNzA0ODUyLTluOTZxOXRuMHI4am1ybWRvaDBsdHJrdTRzcW05b2JqLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMjk1MDExNzA0ODUyLTluOTZxOXRuMHI4am1ybWRvaDBsdHJrdTRzcW05b2JqLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTAzNDYyNzM1NjcxNjM3MTQ2OTE3IiwiaGQiOiJzdHVkZW50Lm1tdS5lZHUubXkiLCJlbWFpbCI6IjExODEyMDMzMzRAc3R1ZGVudC5tbXUuZWR1Lm15IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJPdm1DVzVhSWJPU2xqYi04OUZ3Q2lBIiwibmFtZSI6Ik1BSyBZRU4gV0VJIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hLS9BT2gxNEdpRmctZDUyZWNhYldGUXM0WkhPUVREcnhxd1NLOWlrd0FmOURzPXM5Ni1jIiwiZ2l2ZW5fbmFtZSI6Ik1BSyIsImZhbWlseV9uYW1lIjoiWUVOIFdFSSIsImxvY2FsZSI6ImVuLUdCIiwiaWF0IjoxNjMxMTMyMDU1LCJleHAiOjE2MzExMzU2NTUsImp0aSI6IjU4YzlkMmQ5MmM0ZDQ0MTQ3NzM0MjBmNWZlOWRjODU1YTRmYjI2NTYifQ.CkVeVbBKKADV4kX3o3u7V_Lk6ldV4aAl9YO-Q9-JX6uj4yZGgr6sM9jabruZOThy-tchhmo4a-yGw_lMJrLNIoiUlnwqy3g7F9HDpw7h6FxaJtIFZB2ALINdn72CQAiVAxtfhOg5dGzykyjIrgXQxnqtNh23JtVZgi7RLSSXW4lfUXQ43FE-Tq9vX2r6t8M7_KYQI-e9TVVXKfQSS6ZylLEREzDP-OnK27f66vob2b8RyFwoXBN9BUn8hoPP5KEwYjQnORiydmEsS4pMv_6gauilQBJ7FX-eNFxeQSR1627EEZggiUl0GAtdrzN9qgmyQpfbjWLfLxilRshwRbNIHA
+      googleId: eyJhbGciOiJSUzI1NiIsImtpZCI6Ijk5MWIwNjM2YWFkYTM0MWM1YTA4ZTBkOGYyNDA2OTcyMDY0ZGM4ZWQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiMjk1MDExNzA0ODUyLTluOTZxOXRuMHI4am1ybWRvaDBsdHJrdTRzcW05b2JqLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMjk1MDExNzA0ODUyLTluOTZxOXRuMHI4am1ybWRvaDBsdHJrdTRzcW05b2JqLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTA1ODIxMjQ3ODMxOTQyMjI1MDM1IiwiZW1haWwiOiJzaGFvbm1ha0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6IktPQWQ4UnlHaW84cERaZUpPUHVaYkEiLCJuYW1lIjoiU2hhdW4gTWFrIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hLS9BT2gxNEdocEhHaHRFUDFUY3NDTWRsTkduNGVGeVdvemk3RUdwTjBuYlNWZ053PXM5Ni1jIiwiZ2l2ZW5fbmFtZSI6IlNoYXVuIiwiZmFtaWx5X25hbWUiOiJNYWsiLCJsb2NhbGUiOiJlbiIsImlhdCI6MTYzMTI0NTI4MywiZXhwIjoxNjMxMjQ4ODgzLCJqdGkiOiI0YmIxMjk5YmNmMTkzNzM3NGFkNmYwODFjZDhmNWE4Y2FkMTIwODQ1In0.Cg8W8gfHM-BG9z7iou0aFNmLXG0VmmS2EYIKoG8pftwhCRY8iBHCnrV5No4pgBeRcx16tFLjLKRnW5CHO_reNDDVru-kQiayzMe7odz-1QSkm5-gJT2iJ-j1mJjWPaGhM0oD6qyUFdjm6HuNmZPDUasw48MHASJMhfB2kqnXRntlV6m6V2mIIaN34odFcYLMQffvePKKOmU2PQNTaprt0OXDcTuAwMaHiiYE8SPIj0r03aZ4CmxvTJam_Knb3Lu44LYzdUY4bYAhiaNRQQf9BMlk--6OhOHcoriAQe51FVc3HpGZta_tp5PsSO2YMGQCXGRDucnsxsC0QEbFQmkxOw
     type: object
     properties:
       googleId:
@@ -291,7 +388,7 @@ definitions:
     title: CreatesingletopicRequest
     example:
       name: Earth is flat?
-      user: 3BX8TSpFG
+      user: YbnviMIhh
       theme: non-tech
       description: blabla
       contact: '-'
@@ -317,18 +414,25 @@ definitions:
     - description
     - contact
     - self_description
-  CreatesinglevoteRequest:
-    title: CreatesinglevoteRequest
+  CreatemultiplevotesRequest:
+    title: CreatemultiplevotesRequest
     example:
-      userId: 3BX8TSpFG
-      topicId: fopRqnuRz
+      userId: YbnviMIhh
+      topicId:
+      - fopRqnuRz
+      - fopRqnuRz
+      - fopRqnuRz
+      - fopRqnuRz
+      - fopRqnuRz
       vote: speaker
     type: object
     properties:
       userId:
         type: string
       topicId:
-        type: string
+        type: array
+        items:
+          type: string
       vote:
         type: string
     required:
