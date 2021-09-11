@@ -57,6 +57,7 @@ class UsersDao {
         userId: string,
         userFields: PatchUserDto | PutUserDto
     ) {
+        let updatedUser = null;
         const existingUser = await this.User.findOneAndUpdate(
             { _id: userId },
             { $set: userFields },
@@ -65,12 +66,12 @@ class UsersDao {
 
         // @ts-expect-error
         if(existingUser.fullName && existingUser.age && existingUser.contactNumber) {
-            this.updatePermissionById(userId, 2);
+          updatedUser = await this.updatePermissionById(userId, 2);
         }else{
-            this.updatePermissionById(userId, 1);
+          updatedUser = await this.updatePermissionById(userId, 1);
         }
     
-        return existingUser;
+        return updatedUser;
     }
 
     async removeUserById(userId: string) {
