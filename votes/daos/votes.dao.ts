@@ -42,8 +42,15 @@ class VotesDao {
   }
 
   async getByAllFields(voteFields: CreateVoteDto) {
-    log(voteFields);
     return this.Vote.findOne({...voteFields}).exec();
+  }
+
+  async getByTopicId(topicId: string) {
+    return this.Vote.find({topicId}).exec();
+  }
+
+  async getTotalVotesByTopicId(topicId: string) {
+    return this.Vote.countDocuments({ topicId });
   }
 
   async checkUser(userId: string){

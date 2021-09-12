@@ -41,6 +41,18 @@ export class VotesRoutes extends CommonRoutesConfig {
         VotesController.createVote
       );
 
+    this.app
+    .route('/votesByTopicId/:topicId')
+    .get(
+      VotesMiddleware.extractTopicId,
+      jwtMiddleware.validJWTNeeded,
+      permissionMiddleware.permissionFlagRequired(
+        PermissionFlag.USER_PERMISSION
+      ),
+      VotesMiddleware.validateTopicExistsInVote,
+      VotesController.getVotesByTopicId
+    )
+
     this.app.param('userId', VotesMiddleware.extractUserId);
     this.app
       .route('/votes/:userId')

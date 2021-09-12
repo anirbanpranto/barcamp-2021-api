@@ -31,6 +31,11 @@ class VotesController {
     }
   }
 
+  async getVotesByTopicId(req: express.Request, res: express.Response) {
+    const votes = await votesService.getTotalVotesByTopicId(req.body.id);
+    res.status(200).send(votes.toString());
+  }
+
   async getVote(req: express.Request, res: express.Response) {
     const vote = await votesService.readByUserId(req.params.userId);
     res.status(200).send(vote);

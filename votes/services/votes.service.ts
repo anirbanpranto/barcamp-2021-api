@@ -19,6 +19,14 @@ class VotesService implements CRUD {
         return VotesDao.checkUser(id);
     }
 
+    async readByTopicId(id: string) {
+      return VotesDao.getByTopicId(id);
+    }
+
+    async getTotalVotesByTopicId(id: string) {
+      return VotesDao.getTotalVotesByTopicId(id);
+    }
+
     async getByAllFields( resource: CreateVoteDto) {
       return VotesDao.getByAllFields(resource);
     }
