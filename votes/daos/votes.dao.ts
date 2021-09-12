@@ -53,8 +53,11 @@ class VotesDao {
     return this.Vote.countDocuments({ topicId });
   }
 
-  async checkUser(userId: string){
-    return this.Vote.find({userId}).exec();
+  async getByUserId(userId: string){
+    return this.Vote.find({userId})
+      .populate('userId', 'email picture age fullName companyOrInstitution')
+      .populate('topicId')
+      .exec();
   }
 
   async getAll(limit = 25, page = 0) {
