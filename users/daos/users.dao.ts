@@ -18,6 +18,9 @@ class UsersDao {
         contactNumber: String,
         companyOrInstitution: String,
         picture: String,
+        heard: [{
+          type: String
+        }],
         permissionFlags: Number,
     }, { id: false });
 

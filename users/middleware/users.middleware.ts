@@ -121,6 +121,7 @@ class UsersMiddleware {
         });
         const { email, picture } = await ticket.getPayload();
         const user = await userService.getUserByEmail(email);
+        log(user)
 
         if (!user) {
           req.body.email = email;
@@ -141,6 +142,7 @@ class UsersMiddleware {
             res.status(404).send({ error: `User does not exists, auto sign up failed` });
           }
         }else{
+          log(user)
           // @ts-expect-error
           req.body.email = user.email;
           req.body.userId = user._id;
