@@ -17,8 +17,8 @@ class CommonDateMiddleware {
   }
 
   validateDateRange(routesType: string) {
-    const dateNow = this.convertTZ(`${new Date()}`, 'Asia/Kuala_Lumpur');
     return (req: express.Request, res: express.Response, next: express.NextFunction) => {
+      const dateNow = this.convertTZ(`${new Date()}`, 'Asia/Kuala_Lumpur');
       const dateRange = routesType === 'proposeTopic' ? this.proposeTopicDateRange : this.voteTopicDateRange;
       const dateRangeStart = dateRange[0];
       const dateRangeEnd = dateRange[1];
