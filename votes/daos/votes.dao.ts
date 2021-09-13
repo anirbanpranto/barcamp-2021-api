@@ -54,10 +54,16 @@ class VotesDao {
   }
 
   async getByUserId(userId: string){
-    return this.Vote.find({userId})
-      .populate('userId', 'email picture age fullName companyOrInstitution')
-      .populate('topicId')
-      .exec();
+    return await this.Vote  
+      .aggregate([
+        { $match  : { userId }  },
+        { $group  : { _id: "$topicId"} },
+        { $lookup : { from: "topics", localField: "_id", foreignField: "_id", as: "topic" } },
+        { $lookup : { from: "users", localField: "topic.user", foreignField: "_id", as: "speaker" } },
+        { $unset: ["speaker.heard", "speaker.age", "speaker.permissionFlags", "speaker.contactNumber"] },
+        { $unwind : "$topic" },
+        { $unwind : "$speaker" },
+      ])
   }
 
   async getAll(limit = 25, page = 0) {
