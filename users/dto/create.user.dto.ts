@@ -1,7 +1,5 @@
 export interface CreateUserDto {
+    googleID: string;
     email: string;
-    password: string;
-    firstName?: string;
-    lastName?: string;
-    permissionFlags?: number;
+    picture: string;
 }

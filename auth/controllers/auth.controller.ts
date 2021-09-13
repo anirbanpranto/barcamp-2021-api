@@ -8,6 +8,12 @@ const log: debug.IDebugger = debug('app:auth-controller');
 class AuthController {
     async createJWT(req: express.Request, res: express.Response) {
         try {
+            const tokenBody = {
+                userId: req.body.userId,
+                email: req.body.email,
+                picture: req.body.picture,
+                permissionFlags: req.body.permissionFlags,
+            }
             // @ts-expect-error
             const jwtSecret: string = process.env.JWT_SECRET;
             const tokenExpirationInSeconds = 36000;
@@ -19,7 +25,7 @@ class AuthController {
                 .digest('base64');
             req.body.refreshKey = salt.export();
             if(jwtSecret){
-                const token = jwt.sign(req.body, jwtSecret, {
+                const token = jwt.sign(tokenBody, jwtSecret, {
                     expiresIn: tokenExpirationInSeconds,
                 });
                 return res
@@ -33,6 +39,10 @@ class AuthController {
             log('createJWT error: %O', err);
             return res.status(500).send();
         }
+    }
+
+    async checkAuth(req: express.Request, res: express.Response) {
+      return res.status(200).send();
     }
 }
 

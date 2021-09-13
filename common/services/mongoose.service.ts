@@ -6,7 +6,8 @@ const log: debug.IDebugger = debug('app:mongoose-service');
 class MongooseService {
     private count = 0;
     private mongooseOptions = {
-        serverSelectionTimeoutMS: 5000
+        serverSelectionTimeoutMS: 5000,
+        useNewUrlParser: true,
     };
 
     constructor() {
@@ -20,7 +21,8 @@ class MongooseService {
     connectWithRetry = () => {
         log('Attempting MongoDB connection (will retry if needed)');
         mongoose
-            //@ts-expect-error
+        
+            // @ts-expect-error
             .connect(process.env.DB, this.mongooseOptions)
             .then(() => {
                 log('MongoDB is connected');

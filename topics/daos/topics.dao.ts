@@ -14,12 +14,12 @@ class TopicsDao {
         _id: String,
         name: String,
         user: { type: String, ref: 'Users' },
-        Theme: String,
-        Description: String,
-        Contact: String,
-        Institute: String,
-        Company : String,
-        Self_Description : String
+        theme: String,
+        description: String,
+        contact: String,
+        institute: String,
+        company : String,
+        self_description : String
     }, { id: false });
 
     Topic = mongooseService.getMongoose().model('Topics', this.topicSchema);
@@ -32,26 +32,29 @@ class TopicsDao {
         const topicId = shortid.generate();
         const topic = new this.Topic({
             _id: topicId,
-            ...topicFields,
-            permissionFlags: 1,
+            ...topicFields
         });
         await topic.save();
         return topicId;
     }
 
     async checkUser(userId: string){
-        return this.Topic.findOne({user : userId}).exec();
+        return this.Topic.findOne({user : userId})
+              .populate('user', 'email picture age fullName companyOrInstitution')
+              .exec();
     }
     
     async getTopicById(topicId: string) {
-        return this.Topic.findOne({ _id: topicId }).exec();
+        return this.Topic.findOne({ _id: topicId })
+              .populate('user', 'email picture age fullName companyOrInstitution')
+              .exec();
     }
     
     async getTopics(limit = 25, page = 0) {
         return this.Topic.find()
             .limit(limit)
             .skip(limit * page)
-            .populate('user')
+            .populate('user', 'email picture age fullName companyOrInstitution')
             .exec();
     }
 

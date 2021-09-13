@@ -18,6 +18,11 @@ class TopicsController {
         res.status(200).send(topic);
     }
 
+    async getTopicByUser(req: express.Request, res: express.Response) {
+      const topic = await topicsService.findByUser(req.body.id);
+      res.status(200).send(topic);
+  }
+
     async createTopic(req: express.Request, res: express.Response) {
         const topicId = await topicsService.create(req.body);
         res.status(201).send({ id: topicId });

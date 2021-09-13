@@ -24,8 +24,7 @@ export class UsersRoutes extends CommonRoutesConfig {
                 UsersController.listUsers
             )
             .post(
-                body('email').isEmail(),
-                body('password').isLength({min : 5}).withMessage('Must include password (5+ characters)'),
+                body('googleId').isString(),
                 BodyValidationMiddleware.verifyBodyFieldsErrors,
                 UsersMiddleware.validateSameEmailDoesntExist,
                 UsersController.createUser
@@ -37,6 +36,9 @@ export class UsersRoutes extends CommonRoutesConfig {
             .all(
                 UsersMiddleware.validateUserExists,
                 jwtMiddleware.validJWTNeeded,
+                permissionMiddleware.permissionFlagRequired(
+                  PermissionFlag.BASIC_PERMISSION
+                ),
                 permissionMiddleware.onlySameUserOrAdminCanDoThisAction
             )
             .get(UsersController.getUserById)
@@ -44,7 +46,6 @@ export class UsersRoutes extends CommonRoutesConfig {
 
         this.app.put(`/users/:userId`, [
             body('email').isEmail(),
-            body('password').isLength({min : 5}).withMessage('Must include password (5+ characters)'),
             body('firstName').isString(),
             body('lastName').isString(),
             body('permissionFlags').isInt(),
@@ -55,10 +56,12 @@ export class UsersRoutes extends CommonRoutesConfig {
         ]);
 
         this.app.patch(`/users/:userId`, [
-            body('email').isEmail().optional(),
-            body('password').isLength({min : 5}).withMessage('Password must be 5+ characters').optional(),
-            body('firstName').isString().optional(),
+            body('fullName').isString().optional(),
+            body('age').isNumeric().optional(),
+            body('contactNumber').isString().optional(),
             body('permissionFlags').isInt().optional(),
+            body('companyOrInstitution').isString().optional(),
+            body('heard').isArray().withMessage('Heard has to be an array').optional(),
             BodyValidationMiddleware.verifyBodyFieldsErrors,
             UsersMiddleware.validatePatchEmail,
             permissionMiddleware.userCantChangePermission,
@@ -68,11 +71,6 @@ export class UsersRoutes extends CommonRoutesConfig {
         this.app.put(`/users/:userId/permissionFlags/:permissionFlags`, [
             jwtMiddleware.validJWTNeeded,
             permissionMiddleware.onlySameUserOrAdminCanDoThisAction,
-        
-            // Note: The above two pieces of middleware are needed despite
-            // the reference to them in the .all() call, because that only covers
-            // /users/:userId, not anything beneath it in the hierarchy
-        
             permissionMiddleware.permissionFlagRequired(
                 PermissionFlag.USER_PERMISSION
             ),

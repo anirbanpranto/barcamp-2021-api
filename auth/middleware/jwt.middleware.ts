@@ -24,7 +24,7 @@ class JwtMiddleware {
         res: express.Response,
         next: express.NextFunction
     ) {
-        const user: any = await usersService.getUserByEmailWithPassword(
+        const user: any = await usersService.getUserByEmail(
             res.locals.jwt.email
         );
         const salt = crypto.createSecretKey(
@@ -79,6 +79,41 @@ class JwtMiddleware {
         } else {
             return res.status(401).send();
         }
+    }
+
+    async validateParamUserIdIsUser(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ){
+      try {
+        let token = req.headers['Authorization'] || req.headers.authorization;
+        // @ts-expect-error
+        token = token.split(' ')[1];
+
+        // @ts-expect-error
+        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+          if (err) {
+            return res
+              .status(401)
+              .json({ status: false, error: 'Token is not valid' });
+          }
+
+          // @ts-expect-error
+          if (decoded.userId !== req.params.userId) {
+            return res
+              .status(401)
+              .json({ status: false, error: "You don't have access to this user" });
+          }
+
+          // @ts-expect-error
+          req.decoded = decoded;
+          next();
+        });
+      } catch (error) {
+        return res.status(500).send();
+      }
+
     }
 }
 

@@ -5,6 +5,7 @@ import express from 'express';
 import BodyValidationMiddleware from '../common/middleware/body.validation.middleware';
 import { body } from 'express-validator';
 import jwtMiddleware from './middleware/jwt.middleware';
+import usersMiddleware from '../users/middleware/users.middleware';
 
 export class AuthRoutes extends CommonRoutesConfig {
     constructor(app: express.Application) {
@@ -12,13 +13,20 @@ export class AuthRoutes extends CommonRoutesConfig {
     }
 
     configureRoutes(): express.Application {
-        this.app.post(`/auth`, [
-            body('email').isEmail(),
-            body('password').isString(),
-            BodyValidationMiddleware.verifyBodyFieldsErrors,
-            authMiddleware.verifyUserPassword,
-            authController.createJWT,
-        ]);
+
+      this.app.get(
+          `/auth/check`, 
+          jwtMiddleware.validJWTNeeded, 
+          authController.checkAuth
+        );
+
+      this.app.route(`/auth/`)
+        .post(
+          body('googleId').isString(),
+          BodyValidationMiddleware.verifyBodyFieldsErrors,
+          usersMiddleware.createAccountIfNotExists,
+          authController.createJWT,
+        )
 
         this.app.post(`/auth/refresh-token`, [
             jwtMiddleware.validJWTNeeded,

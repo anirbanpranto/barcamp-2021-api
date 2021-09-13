@@ -6,6 +6,9 @@ import { PatchTopicDto } from '../dto/patch.topic.dto';
 import usersService from '../../users/services/users.service';
 import topicsDao from '../daos/topics.dao';
 
+import debug from 'debug';
+const log: debug.IDebugger = debug('app:topic-service');
+
 class TopicsService implements CRUD {
     async create(resource: CreateTopicDto) {
         return TopicsDao.addTopic(resource);
@@ -19,7 +22,7 @@ class TopicsService implements CRUD {
         return TopicsDao.getTopics(limit, page);
     }
 
-    async findUser(userId : string) {
+    async findByUser(userId : string) {
         return topicsDao.checkUser(userId);
     }
 
