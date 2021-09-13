@@ -59,7 +59,9 @@ class TopicsMiddleware {
         if (res.locals.jwt.userId === req.body.user) {
             next();
         } else {
-            return res.status(403).send();
+            return res.status(403).send({
+              error: `You do not have access to this`,
+            });
         }
     }
 
