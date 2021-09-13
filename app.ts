@@ -18,9 +18,11 @@ const swaggerUI = require('swagger-ui-express');
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
 
-const dotenvResult = dotenv.config();
-if (dotenvResult.error) {
-    throw dotenvResult.error;
+if (process.env.NODE_ENV !== 'production'){
+  const dotenvResult = dotenv.config();
+  if (dotenvResult.error) {
+      throw dotenvResult.error;
+  }
 }
 
 const app: express.Application = express();
