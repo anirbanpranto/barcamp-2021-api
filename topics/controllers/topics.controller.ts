@@ -19,7 +19,6 @@ class TopicsController {
     }
 
     async getTopicByUser(req: express.Request, res: express.Response) {
-      log(req.body);
       const topic = await topicsService.findByUser(req.body.id);
       res.status(200).send(topic);
   }

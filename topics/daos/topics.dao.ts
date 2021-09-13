@@ -39,18 +39,22 @@ class TopicsDao {
     }
 
     async checkUser(userId: string){
-        return this.Topic.findOne({user : userId}).exec();
+        return this.Topic.findOne({user : userId})
+              .populate('user', 'email picture age fullName companyOrInstitution')
+              .exec();
     }
     
     async getTopicById(topicId: string) {
-        return this.Topic.findOne({ _id: topicId }).exec();
+        return this.Topic.findOne({ _id: topicId })
+              .populate('user', 'email picture age fullName companyOrInstitution')
+              .exec();
     }
     
     async getTopics(limit = 25, page = 0) {
         return this.Topic.find()
             .limit(limit)
             .skip(limit * page)
-            .populate('user')
+            .populate('user', 'email picture age fullName companyOrInstitution')
             .exec();
     }
 

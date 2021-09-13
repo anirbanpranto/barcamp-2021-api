@@ -42,12 +42,22 @@ class VotesDao {
   }
 
   async getByAllFields(voteFields: CreateVoteDto) {
-    log(voteFields);
     return this.Vote.findOne({...voteFields}).exec();
   }
 
-  async checkUser(userId: string){
-    return this.Vote.find({userId}).exec();
+  async getByTopicId(topicId: string) {
+    return this.Vote.find({topicId}).exec();
+  }
+
+  async getTotalVotesByTopicId(topicId: string) {
+    return this.Vote.countDocuments({ topicId });
+  }
+
+  async getByUserId(userId: string){
+    return this.Vote.find({userId})
+      .populate('userId', 'email picture age fullName companyOrInstitution')
+      .populate('topicId')
+      .exec();
   }
 
   async getAll(limit = 25, page = 0) {
@@ -57,6 +67,19 @@ class VotesDao {
       .populate('userId')
       .populate('topicId')
       .exec();
+  }
+
+  async getSortedVotes () {
+    const result = await this.Vote
+      .aggregate([
+        { $match  : {}  },
+        { $group  : { _id: "$topicId", count: {$sum: 1} } },
+        { $sort   : { count : -1 } },
+        { $lookup : { from: "topics", localField: "_id", foreignField: "_id", as: "topic" } },
+        { $unwind : "$topic" },
+      ])
+
+    return result;
   }
 
   async removeById(topicId: string) {

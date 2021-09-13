@@ -20,12 +20,13 @@ export class AuthRoutes extends CommonRoutesConfig {
           authController.checkAuth
         );
 
-        this.app.post(`/auth`, [
-            body('googleId').isString(),
-            BodyValidationMiddleware.verifyBodyFieldsErrors,
-            usersMiddleware.createAccountIfNotExists,
-            authController.createJWT,
-        ]);
+      this.app.route(`/auth/`)
+        .post(
+          body('googleId').isString(),
+          BodyValidationMiddleware.verifyBodyFieldsErrors,
+          usersMiddleware.createAccountIfNotExists,
+          authController.createJWT,
+        )
 
         this.app.post(`/auth/refresh-token`, [
             jwtMiddleware.validJWTNeeded,

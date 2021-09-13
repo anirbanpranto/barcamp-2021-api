@@ -54,6 +54,22 @@ class VotesMiddleware {
       }
   }
 
+  async validateTopicExistsInVote(
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) {
+    const topicExistsInVote = await voteService.readByTopicId(req.body.id);
+
+    if (topicExistsInVote.length > 0) {
+      return next();
+    }else{
+      return res.status(404).send({
+        error: `Topic not found in vote`,
+      }).end();
+    }
+  }
+
   async validateTopicExists(
       req: express.Request,
       res: express.Response,
@@ -134,6 +150,16 @@ class VotesMiddleware {
     next: express.NextFunction
   ) {
     req.body.id = req.params.userId;
+    next();
+  }
+
+  async extractTopicId(
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) {
+    log('extractTopicId')
+    req.body.id = req.params.topicId;
     next();
   }
 }

@@ -61,6 +61,7 @@ export class UsersRoutes extends CommonRoutesConfig {
             body('contactNumber').isString().optional(),
             body('permissionFlags').isInt().optional(),
             body('companyOrInstitution').isString().optional(),
+            body('heard').isArray().withMessage('Heard has to be an array').optional(),
             BodyValidationMiddleware.verifyBodyFieldsErrors,
             UsersMiddleware.validatePatchEmail,
             permissionMiddleware.userCantChangePermission,

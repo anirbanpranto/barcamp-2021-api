@@ -27,7 +27,7 @@ export class VotesRoutes extends CommonRoutesConfig {
       .post(
         body('userId').isLength({min: 1}).withMessage('Must include userId'), 
         body('topicId').isArray({ min: 5, max: 5 }).withMessage('Must propose exactly 5 topics'),
-        body('vote').exists().matches(/^(speaker|topic)$/).withMessage('Vote needs to exist and value is either speaker or topic'),
+        body('vote').exists().matches(/^(topic)$/).withMessage('Vote has to be topic'),
         BodyValidationMiddleware.verifyBodyFieldsErrors,  
         jwtMiddleware.validJWTNeeded,
         permissionMiddleware.permissionFlagRequired(
@@ -40,6 +40,28 @@ export class VotesRoutes extends CommonRoutesConfig {
         VotesMiddleware.validateTopicExists,
         VotesController.createVote
       );
+
+    this.app
+      .route('/votesByTopicId/:topicId')
+      .get(
+        VotesMiddleware.extractTopicId,
+        jwtMiddleware.validJWTNeeded,
+        permissionMiddleware.permissionFlagRequired(
+          PermissionFlag.USER_PERMISSION
+        ),
+        VotesMiddleware.validateTopicExistsInVote,
+        VotesController.getVotesByTopicId
+      )
+
+    this.app
+      .route('/votes/leaderboard')
+      .get(
+        jwtMiddleware.validJWTNeeded,
+        permissionMiddleware.permissionFlagRequired(
+          PermissionFlag.USER_PERMISSION
+        ),
+        VotesController.getLeaderboard
+      )
 
     this.app.param('userId', VotesMiddleware.extractUserId);
     this.app

@@ -28,10 +28,10 @@ export class TopicsRoutes extends CommonRoutesConfig {
                 body('user').isString(),
                 body('theme').isString().matches(/^(non-tech|tech|nonsense)$/).withMessage('Topic theme has to be either non-tech, tech or nonsense'),
                 body('description').isString(),
-                body('contact').isString(),
+                body('self_description').isString(),
+                body('contact').isString().optional(),
                 body('institute').isString().optional(),
                 body('company').isString().optional(),
-                body('self_description').isString(),
                 BodyValidationMiddleware.verifyBodyFieldsErrors,
                 jwtMiddleware.validJWTNeeded,
                 permissionMiddleware.permissionFlagRequired(

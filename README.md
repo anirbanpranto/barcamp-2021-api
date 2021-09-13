@@ -19,5 +19,16 @@
 DB=mongodb://localhost:27017/api-db
 JWT_SECRET=My!@!Se3cr8tH4sh3
 ```
+
+## JWT decoded body
+```js
+tokenBody = {
+                userId: req.body.userId,
+                email: req.body.email,
+                picture: req.body.picture,
+                permissionFlags: req.body.permissionFlags,
+            }
+```
+
 * `sudo docker-compose up -d` or add your own mongodb connection string in the .env
 * `yarn start` or `yarn debug`
