@@ -69,6 +69,19 @@ class VotesDao {
       .exec();
   }
 
+  async getSortedVotes () {
+    const result = await this.Vote
+      .aggregate([
+        { $match  : {}  },
+        { $group  : { _id: "$topicId", count: {$sum: 1} } },
+        { $sort   : { count : -1 } },
+        { $lookup : { from: "topics", localField: "_id", foreignField: "_id", as: "topic" } },
+        { $unwind : "$topic" },
+      ])
+
+    return result;
+  }
+
   async removeById(topicId: string) {
     return this.Vote.deleteOne({ _id: topicId }).exec();
   }

@@ -42,16 +42,26 @@ export class VotesRoutes extends CommonRoutesConfig {
       );
 
     this.app
-    .route('/votesByTopicId/:topicId')
-    .get(
-      VotesMiddleware.extractTopicId,
-      jwtMiddleware.validJWTNeeded,
-      permissionMiddleware.permissionFlagRequired(
-        PermissionFlag.USER_PERMISSION
-      ),
-      VotesMiddleware.validateTopicExistsInVote,
-      VotesController.getVotesByTopicId
-    )
+      .route('/votesByTopicId/:topicId')
+      .get(
+        VotesMiddleware.extractTopicId,
+        jwtMiddleware.validJWTNeeded,
+        permissionMiddleware.permissionFlagRequired(
+          PermissionFlag.USER_PERMISSION
+        ),
+        VotesMiddleware.validateTopicExistsInVote,
+        VotesController.getVotesByTopicId
+      )
+
+    this.app
+      .route('/votes/leaderboard')
+      .get(
+        jwtMiddleware.validJWTNeeded,
+        permissionMiddleware.permissionFlagRequired(
+          PermissionFlag.USER_PERMISSION
+        ),
+        VotesController.getLeaderboard
+      )
 
     this.app.param('userId', VotesMiddleware.extractUserId);
     this.app

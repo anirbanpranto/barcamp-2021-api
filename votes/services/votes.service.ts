@@ -30,6 +30,10 @@ class VotesService implements CRUD {
     async getByAllFields( resource: CreateVoteDto) {
       return VotesDao.getByAllFields(resource);
     }
+
+    async getLeaderboard() {
+      return VotesDao.getSortedVotes();
+    }
 }
 
 export default new VotesService();

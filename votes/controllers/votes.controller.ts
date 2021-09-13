@@ -40,6 +40,11 @@ class VotesController {
     const vote = await votesService.readByUserId(req.params.userId);
     res.status(200).send(vote);
   }
+
+  async getLeaderboard(req: express.Request, res: express.Response) {
+    const leaderboard = await votesService.getLeaderboard();
+    res.status(200).send(leaderboard);
+  }
 }
 
 export default new VotesController();
