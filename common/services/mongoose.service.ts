@@ -22,8 +22,8 @@ class MongooseService {
         log('Attempting MongoDB connection (will retry if needed)');
         mongoose
         
-            // // @ts-expect-error
-            .connect('mongodb+srv://shaun:shaun-barcamp-staging@barcampcyberjaya2021-st.evbg1.mongodb.net/api-db', this.mongooseOptions)
+            // @ts-expect-error
+            .connect(process.env.DB, this.mongooseOptions)
             .then(() => {
                 log('MongoDB is connected');
             })
