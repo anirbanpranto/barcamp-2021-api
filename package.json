@@ -8,7 +8,7 @@
     "debug": "export DEBUG=* && tsc && npm start",
     "test": "mocha -r ts-node/register 'test/**/*.test.ts' --unhandled-rejections=strict",
     "test-debug": "export DEBUG=* && npm test",
-    "postinstall": "tsc && cp .env ./dist/.env"
+    "postinstall": "tsc"
   },
   "author": "",
   "license": "ISC",
