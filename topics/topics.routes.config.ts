@@ -18,7 +18,6 @@ export class TopicsRoutes extends CommonRoutesConfig {
         this.app
             .route(`/topics`)
             .get(
-                // DateMiddleware.validateDateRange('proposeTopic'),
                 jwtMiddleware.validJWTNeeded,
                 permissionMiddleware.permissionFlagRequired(
                     PermissionFlag.USER_PERMISSION
@@ -34,6 +33,7 @@ export class TopicsRoutes extends CommonRoutesConfig {
                 body('contact').isString().optional(),
                 body('institute').isString().optional(),
                 body('company').isString().optional(),
+                DateMiddleware.validateDateRange('proposeTopic'),
                 BodyValidationMiddleware.verifyBodyFieldsErrors,
                 jwtMiddleware.validJWTNeeded,
                 permissionMiddleware.permissionFlagRequired(

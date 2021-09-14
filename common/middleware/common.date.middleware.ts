@@ -9,8 +9,9 @@ class CommonDateMiddleware {
     log('constructor on common date middleware');
   }
   
-  private proposeTopicDateRange = [new Date("15 September, 2020 00:00:00"), new Date("24 September, 2020 00:00:00")];
-  private voteTopicDateRange = [];
+  private proposeTopicDateRange = [new Date("15 September, 2021 00:00:00"), new Date("24 September, 2021 00:00:00")];
+  private voteTopicDateRange = [new Date("25 September, 2021 00:00:00"), new Date("30 September, 2021 00:00:00")];
+  private initialDateRange = [new Date("1 January, 2021 00:00:00"), new Date("31 December, 2021 00:00:00")];
 
   convertTZ(date: string, tzString: string) {
     return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString}));   
@@ -19,7 +20,12 @@ class CommonDateMiddleware {
   validateDateRange(routesType: string) {
     return (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const dateNow = this.convertTZ(`${new Date()}`, 'Asia/Kuala_Lumpur');
-      const dateRange = routesType === 'proposeTopic' ? this.proposeTopicDateRange : this.voteTopicDateRange;
+      let dateRange = this.initialDateRange;
+      if(routesType === 'proposeTopic') {
+        dateRange = this.proposeTopicDateRange;
+      } else if(routesType === 'voteTopic') {
+        dateRange = this.voteTopicDateRange;
+      }
       const dateRangeStart = dateRange[0];
       const dateRangeEnd = dateRange[1];
       const dateRangeStartString = dateRangeStart.toString();
