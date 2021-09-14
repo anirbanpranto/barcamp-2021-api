@@ -28,9 +28,9 @@ class CommonDateMiddleware {
       }
       const dateRangeStart = dateRange[0];
       const dateRangeEnd = dateRange[1];
-      const dateRangeStartString = dateRangeStart.toString();
-      const dateRangeEndString = dateRangeEnd.toString();
-      const dateNowString = dateNow.toString();
+      const dateRangeStartString = dateRangeStart.getTime();
+      const dateRangeEndString = dateRangeEnd.getTime();
+      const dateNowString = dateNow.getTime();
       log(dateNow);
       if (dateRangeStartString <= dateNowString && dateNowString <= dateRangeEndString) {
         next();

@@ -20,7 +20,6 @@ export class VotesRoutes extends CommonRoutesConfig {
     this.app
       .route('/votes')
       .get(
-        DateMiddleware.validateDateRange('voteTopic'),
         jwtMiddleware.validJWTNeeded,         
         permissionMiddleware.permissionFlagRequired(
           PermissionFlag.USER_PERMISSION
