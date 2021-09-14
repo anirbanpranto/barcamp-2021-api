@@ -16,11 +16,10 @@ export class VotesRoutes extends CommonRoutesConfig {
   }
 
   configureRoutes(): express.Application{
-    this.app.all('/votes', DateMiddleware.validateDateRange('voteTopic'));
-
     this.app
       .route('/votes')
       .get(
+        DateMiddleware.validateDateRange('voteTopic'),
         jwtMiddleware.validJWTNeeded,         
         permissionMiddleware.permissionFlagRequired(
           PermissionFlag.USER_PERMISSION
@@ -31,6 +30,7 @@ export class VotesRoutes extends CommonRoutesConfig {
         body('userId').isLength({min: 1}).withMessage('Must include userId'), 
         body('topicId').isArray({ min: 5, max: 5 }).withMessage('Must propose exactly 5 topics'),
         body('vote').exists().matches(/^(topic)$/).withMessage('Vote has to be topic'),
+        DateMiddleware.validateDateRange('voteTopic'),
         BodyValidationMiddleware.verifyBodyFieldsErrors,  
         jwtMiddleware.validJWTNeeded,
         permissionMiddleware.permissionFlagRequired(
@@ -72,6 +72,7 @@ export class VotesRoutes extends CommonRoutesConfig {
     this.app
       .route('/votes/:userId')
       .get(
+        DateMiddleware.validateDateRange('voteTopic'),
         jwtMiddleware.validJWTNeeded,
         permissionMiddleware.permissionFlagRequired(
           PermissionFlag.USER_PERMISSION
