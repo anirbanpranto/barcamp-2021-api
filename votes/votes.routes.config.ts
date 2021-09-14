@@ -47,6 +47,7 @@ export class VotesRoutes extends CommonRoutesConfig {
     this.app
       .route('/votesByTopicId/:topicId')
       .get(
+        DateMiddleware.validateDateRange('voteTopic'),
         VotesMiddleware.extractTopicId,
         jwtMiddleware.validJWTNeeded,
         permissionMiddleware.permissionFlagRequired(
@@ -59,6 +60,7 @@ export class VotesRoutes extends CommonRoutesConfig {
     this.app
       .route('/votes/leaderboard')
       .get(
+        DateMiddleware.validateDateRange('voteTopic'),
         jwtMiddleware.validJWTNeeded,
         permissionMiddleware.permissionFlagRequired(
           PermissionFlag.USER_PERMISSION
