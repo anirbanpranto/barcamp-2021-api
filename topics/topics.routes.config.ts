@@ -18,7 +18,7 @@ export class TopicsRoutes extends CommonRoutesConfig {
         this.app
             .route(`/topics`)
             .get(
-                DateMiddleware.validateDateRange('proposeTopic'),
+                // DateMiddleware.validateDateRange('proposeTopic'),
                 jwtMiddleware.validJWTNeeded,
                 permissionMiddleware.permissionFlagRequired(
                     PermissionFlag.USER_PERMISSION
