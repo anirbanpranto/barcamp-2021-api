@@ -15,6 +15,8 @@ export class TopicsRoutes extends CommonRoutesConfig {
     }
 
     configureRoutes(): express.Application {
+        this.app.all('/topics', DateMiddleware.validateDateRange('proposeTopic'));
+
         this.app
             .route(`/topics`)
             .get(

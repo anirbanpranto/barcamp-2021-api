@@ -8,6 +8,7 @@ import jwtMiddleware from '../auth/middleware/jwt.middleware';
 import votesMiddleware from './middleware/votes.middleware';
 import permissionMiddleware from '../common/middleware/common.permission.middleware';
 import { PermissionFlag } from '../common/middleware/common.permissionflag.enum';
+import DateMiddleware from '../common/middleware/common.date.middleware';
 
 export class VotesRoutes extends CommonRoutesConfig {
   constructor(app: express.Application) {
@@ -15,6 +16,8 @@ export class VotesRoutes extends CommonRoutesConfig {
   }
 
   configureRoutes(): express.Application{
+    this.app.all('/votes', DateMiddleware.validateDateRange('voteTopic'));
+
     this.app
       .route('/votes')
       .get(
