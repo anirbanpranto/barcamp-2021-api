@@ -22,7 +22,7 @@ class VotesDao {
       type: String,
       ref: 'Topics'
     },
-  }, { id: false})
+  }, { id: false, timestamps: true})
 
   Vote = mongooseService.getMongoose().model('Votes', this.voteSchema);
 
@@ -54,10 +54,16 @@ class VotesDao {
   }
 
   async getByUserId(userId: string){
-    return this.Vote.find({userId})
-      .populate('userId', 'email picture age fullName companyOrInstitution')
-      .populate('topicId')
-      .exec();
+    return await this.Vote  
+      .aggregate([
+        { $match  : { userId }  },
+        { $group  : { _id: "$topicId"} },
+        { $lookup : { from: "topics", localField: "_id", foreignField: "_id", as: "topic" } },
+        { $lookup : { from: "users", localField: "topic.user", foreignField: "_id", as: "speaker" } },
+        { $unset: ["speaker.heard", "speaker.age", "speaker.permissionFlags", "speaker.contactNumber"] },
+        { $unwind : "$topic" },
+        { $unwind : "$speaker" },
+      ])
   }
 
   async getAll(limit = 25, page = 0) {
@@ -76,7 +82,10 @@ class VotesDao {
         { $group  : { _id: "$topicId", count: {$sum: 1} } },
         { $sort   : { count : -1 } },
         { $lookup : { from: "topics", localField: "_id", foreignField: "_id", as: "topic" } },
+        { $lookup : { from: "users", localField: "topic.user", foreignField: "_id", as: "user" } },
+        { $unset: ["user.heard", "user.age", "user.permissionFlags", "user.contactNumber"] },
         { $unwind : "$topic" },
+        { $unwind : "$user" },
       ])
 
     return result;

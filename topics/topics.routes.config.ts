@@ -7,6 +7,7 @@ import express from 'express';
 import jwtMiddleware from '../auth/middleware/jwt.middleware';
 import permissionMiddleware from '../common/middleware/common.permission.middleware';
 import { PermissionFlag } from '../common/middleware/common.permissionflag.enum';
+import DateMiddleware from '../common/middleware/common.date.middleware';
 
 export class TopicsRoutes extends CommonRoutesConfig {
     constructor(app: express.Application) {
@@ -17,6 +18,7 @@ export class TopicsRoutes extends CommonRoutesConfig {
         this.app
             .route(`/topics`)
             .get(
+                // DateMiddleware.validateDateRange('proposeTopic'),
                 jwtMiddleware.validJWTNeeded,
                 permissionMiddleware.permissionFlagRequired(
                     PermissionFlag.USER_PERMISSION

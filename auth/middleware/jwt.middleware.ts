@@ -40,6 +40,7 @@ class JwtMiddleware {
                 req.body = {
                     userId: user._id,
                     email: user.email,
+                    picture: user.picture,
                     permissionFlags: user.permissionFlags,
                 };
                 return next();
