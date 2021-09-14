@@ -30,7 +30,7 @@ class CommonDateMiddleware {
         next();
       } else {
         res.status(425).send({
-          message: `Date range is not valid. Date range must be between ${dateRangeStartString} and ${dateRangeEndString}. Date now is ${dateNow}`
+          error: `Date range is not valid. Date range must be between ${dateRangeStartString} and ${dateRangeEndString}. Date now is ${dateNow}`
         });
       }
     }
