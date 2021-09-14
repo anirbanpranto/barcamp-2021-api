@@ -20,7 +20,7 @@ class TopicsDao {
         institute: String,
         company : String,
         self_description : String
-    }, { id: false });
+    }, { id: false, timestamps: true});
 
     Topic = mongooseService.getMongoose().model('Topics', this.topicSchema);
 

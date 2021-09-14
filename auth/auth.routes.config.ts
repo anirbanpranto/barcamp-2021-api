@@ -28,12 +28,13 @@ export class AuthRoutes extends CommonRoutesConfig {
           authController.createJWT,
         )
 
-        this.app.post(`/auth/refresh-token`, [
-            jwtMiddleware.validJWTNeeded,
-            jwtMiddleware.verifyRefreshBodyField,
-            jwtMiddleware.validRefreshNeeded,
-            authController.createJWT,
-        ]);
-        return this.app;
+      this.app.post(`/auth/refresh-token`, [
+        jwtMiddleware.validJWTNeeded,
+        jwtMiddleware.verifyRefreshBodyField,
+        jwtMiddleware.validRefreshNeeded,
+        authController.createJWT,
+      ]);
+
+      return this.app;
     }
 }

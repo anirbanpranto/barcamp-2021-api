@@ -22,7 +22,7 @@ class VotesDao {
       type: String,
       ref: 'Topics'
     },
-  }, { id: false})
+  }, { id: false, timestamps: true})
 
   Vote = mongooseService.getMongoose().model('Votes', this.voteSchema);
 

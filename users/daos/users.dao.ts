@@ -22,7 +22,7 @@ class UsersDao {
           type: String
         }],
         permissionFlags: Number,
-    }, { id: false });
+    }, { id: false, timestamps: true });
 
     User = mongooseService.getMongoose().model('Users', this.userSchema);
 
