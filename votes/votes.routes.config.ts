@@ -16,6 +16,7 @@ export class VotesRoutes extends CommonRoutesConfig {
   }
 
   configureRoutes(): express.Application{
+    this.app.all('/votes', DateMiddleware.validateDateRange('voteTopic'))
     this.app
       .route('/votes')
       .get(
