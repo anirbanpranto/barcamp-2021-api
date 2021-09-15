@@ -76,7 +76,7 @@ class VotesDao {
   }
 
   async getSortedVotes () {
-    const result = await this.Vote
+    let result = await this.Vote
       .aggregate([
         { $match  : {}  },
         { $group  : { _id: "$topicId", count: {$sum: 1} } },
@@ -87,6 +87,8 @@ class VotesDao {
         { $unwind : "$topic" },
         { $unwind : "$user" },
       ])
+
+    result = result.slice(0, result.length <= 15 ? result.length : 15);
 
     return result;
   }
