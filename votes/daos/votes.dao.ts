@@ -79,6 +79,7 @@ class VotesDao {
     const result = await this.Vote
       .aggregate([
         { $match  : {}  },
+        { $limit  : 15 },
         { $group  : { _id: "$topicId", count: {$sum: 1} } },
         { $sort   : { count : -1 } },
         { $lookup : { from: "topics", localField: "_id", foreignField: "_id", as: "topic" } },
