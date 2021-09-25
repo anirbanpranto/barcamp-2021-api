@@ -75,6 +75,15 @@ export class VotesRoutes extends CommonRoutesConfig {
         votesMiddleware.validateUserExistsWithParam,
         VotesController.getVote
       )
+      .delete(
+        jwtMiddleware.validJWTNeeded,
+        permissionMiddleware.permissionFlagRequired(
+          PermissionFlag.USER_PERMISSION
+        ),
+        jwtMiddleware.validateParamUserIdIsUser,
+        votesMiddleware.validateUserExistsWithParam,
+        VotesController.deleteVoteByUserId
+      )
 
     return this.app;
   }

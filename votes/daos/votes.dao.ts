@@ -96,6 +96,10 @@ class VotesDao {
   async removeById(topicId: string) {
     return this.Vote.deleteOne({ _id: topicId }).exec();
   }
+
+  async removeByUserId(userId: string) {
+    return this.Vote.deleteMany({ userId }).exec();
+  }
 }
 
 export default new VotesDao();

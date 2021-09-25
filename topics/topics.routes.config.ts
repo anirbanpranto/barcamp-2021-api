@@ -33,7 +33,7 @@ export class TopicsRoutes extends CommonRoutesConfig {
                 body('contact').isString().optional(),
                 body('institute').isString().optional(),
                 body('company').isString().optional(),
-                DateMiddleware.validateDateRange('proposeTopic'),
+                // DateMiddleware.validateDateRange('proposeTopic'),
                 BodyValidationMiddleware.verifyBodyFieldsErrors,
                 jwtMiddleware.validJWTNeeded,
                 permissionMiddleware.permissionFlagRequired(
