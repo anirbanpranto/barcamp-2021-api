@@ -11,6 +11,10 @@ class VotesService implements CRUD {
         return VotesDao.removeById(id);
     }
 
+    async deleteByUserId(id: string) {
+        return VotesDao.removeByUserId(id);
+    }
+
     async list(limit: number, page: number) {
         return VotesDao.getAll(limit, page);
     }

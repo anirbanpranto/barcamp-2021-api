@@ -45,6 +45,11 @@ class VotesController {
     const leaderboard = await votesService.getLeaderboard();
     res.status(200).send(leaderboard);
   }
+
+  async deleteVoteByUserId(req: express.Request, res: express.Response) {
+    const vote = await votesService.deleteByUserId(req.params.userId);
+    res.status(200).send(vote);
+  }
 }
 
 export default new VotesController();
