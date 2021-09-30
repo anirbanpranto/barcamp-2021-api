@@ -8,13 +8,14 @@ import jwtMiddleware from '../auth/middleware/jwt.middleware';
 import votesMiddleware from './middleware/votes.middleware';
 import permissionMiddleware from '../common/middleware/common.permission.middleware';
 import { PermissionFlag } from '../common/middleware/common.permissionflag.enum';
+import commonDateMiddleware from '../common/middleware/common.date.middleware';
 
 export class VotesRoutes extends CommonRoutesConfig {
   constructor(app: express.Application) {
     super(app, 'UsersRoutes');
   }
 
-  configureRoutes(): express.Application{
+  configureRoutes(): express.Application{    
     this.app
       .route('/votes')
       .get(
@@ -30,6 +31,7 @@ export class VotesRoutes extends CommonRoutesConfig {
         body('vote').exists().matches(/^(topic)$/).withMessage('Vote has to be topic'),
         BodyValidationMiddleware.verifyBodyFieldsErrors,  
         jwtMiddleware.validJWTNeeded,
+        commonDateMiddleware.validateDateRange('proposeTopic'),
         permissionMiddleware.permissionFlagRequired(
           PermissionFlag.USER_PERMISSION
         ),
@@ -77,6 +79,7 @@ export class VotesRoutes extends CommonRoutesConfig {
       )
       .delete(
         jwtMiddleware.validJWTNeeded,
+        commonDateMiddleware.validateDateRange('proposeTopic'),
         permissionMiddleware.permissionFlagRequired(
           PermissionFlag.USER_PERMISSION
         ),

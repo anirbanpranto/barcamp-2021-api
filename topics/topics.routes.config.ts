@@ -7,7 +7,7 @@ import express from 'express';
 import jwtMiddleware from '../auth/middleware/jwt.middleware';
 import permissionMiddleware from '../common/middleware/common.permission.middleware';
 import { PermissionFlag } from '../common/middleware/common.permissionflag.enum';
-import DateMiddleware from '../common/middleware/common.date.middleware';
+import commonDateMiddleware from '../common/middleware/common.date.middleware';
 
 export class TopicsRoutes extends CommonRoutesConfig {
     constructor(app: express.Application) {
@@ -34,6 +34,7 @@ export class TopicsRoutes extends CommonRoutesConfig {
                 body('institute').isString().optional(),
                 body('company').isString().optional(),
                 // DateMiddleware.validateDateRange('proposeTopic'),
+                commonDateMiddleware.validateDateRange('proposeTopic'),
                 BodyValidationMiddleware.verifyBodyFieldsErrors,
                 jwtMiddleware.validJWTNeeded,
                 permissionMiddleware.permissionFlagRequired(

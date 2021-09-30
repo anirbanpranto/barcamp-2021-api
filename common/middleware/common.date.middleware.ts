@@ -33,7 +33,10 @@ class CommonDateMiddleware {
       const dateNowString = dateNow.getTime();
       log(dateNow);
       if (dateRangeStartString <= dateNowString && dateNowString <= dateRangeEndString) {
-        next();
+        // next();
+        res.status(425).send({
+          error: `Date range is not valid. Date range must be between ${dateRangeStartString} and ${dateRangeEndString}. Date now is ${dateNow}`
+        });
       } else {
         res.status(425).send({
           error: `Date range is not valid. Date range must be between ${dateRangeStartString} and ${dateRangeEndString}. Date now is ${dateNow}`
